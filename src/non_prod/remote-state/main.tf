@@ -18,7 +18,7 @@ provider "azurerm" {
 
 
 resource "azurerm_resource_group" "rg-tfstate" {
-  name     = "tfstatenonprod"
+  name     = "rg-tfstate-nonprod-001"
   location = "West Europe"
 }
 
