@@ -15,8 +15,6 @@ provider "azurerm" {
   client_secret = var.az_ad_sp_secret
 }
 
-
-
 resource "azurerm_resource_group" "rg-tfstate" {
   name     = "rg-tfstate-nonprod-001"
   location = "West Europe"
