@@ -16,10 +16,10 @@ This repo contains the terraform code to implement an Azure Landing Zone to Budg
 To run the commands locally you will need to setup the sensitive variables using Environment variables, to setup it using Powershell, please use the following commands:
 
 ```powershell
-$Env:TF_VAR_az_ad_tenantId = "[BUDGET_THUIS_TENANT_ID]";
-$Env:TF_VAR_az_subscriptionId_non_prod = "[NON_PROD_SUBSCRIPTIONID]";
-$Env:TF_VAR_az_ad_sp_appId = "[SERVICE_PRINCIPAL_CLIENT_ID]";
+
+$Env:TF_VAR_az_ad_sp_appId = "[SERVICE_PRINCIPAL_CLIENT_ID]"; 
 $Env:TF_VAR_az_ad_sp_secret = "[SERVICE_PRINCIPAL_SECRET]";
+
 ```
 
 
@@ -40,7 +40,19 @@ $Env:TF_VAR_az_ad_sp_secret = "[SERVICE_PRINCIPAL_SECRET]";
  ┃ ┃ ┣ 📂sql-db
  ┃ ┃ ┗ 📂sql-server
  ┃ ┗ 📂non_prod
+ ┃ ┃ ┣ 📂remote-state
+ ┃ ┃ ┃ ┣ 📜main.tf
+ ┃ ┃ ┃ ┗ 📜variables.tf
+ ┃ ┃ ┣ 📜main.tf
+ ┃ ┃ ┗ 📜variables.tf
  ┣ 📜.gitignore
  ┗ 📜README.md
 ```
 
+The remote state is configured by subscription.
+
+## Resources naming convention
+
+| Resource Type| Composition | Example    | Obs. |
+|--------------|-------------|------------|------|
+| Resource Group| rg-[app or service name]-[subscription purpose]-[###] | rg-tfstate-prod-001| N/A|
