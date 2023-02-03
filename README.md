@@ -23,4 +23,24 @@ $Env:TF_VAR_az_ad_sp_secret = "[SERVICE_PRINCIPAL_SECRET]";
 ```
 
 
+## Project Structure
+
+```
+📦budget-thuis-lz 
+ ┣ 📂src
+ ┃ ┣ 📂core
+ ┃ ┃ ┣ 📂connectivity
+ ┃ ┃ ┣ 📂identity
+ ┃ ┃ ┗ 📂management
+ ┃ ┣ 📂modules
+ ┃ ┃ ┣ 📂aks
+ ┃ ┃ ┣ 📂keyvault
+ ┃ ┃ ┣ 📂managed-identity
+ ┃ ┃ ┣ 📂network
+ ┃ ┃ ┣ 📂sql-db
+ ┃ ┃ ┗ 📂sql-server
+ ┃ ┗ 📂non_prod
+ ┣ 📜.gitignore
+ ┗ 📜README.md
+```
 
