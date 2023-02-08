@@ -26,7 +26,7 @@ $Env:TF_VAR_az_ad_sp_secret = "[SERVICE_PRINCIPAL_SECRET]";
 ## Project Structure
 
 ```
-📦budget-thuis-lz 
+📦budget-thuis-lz
  ┣ 📂src
  ┃ ┣ 📂core
  ┃ ┃ ┣ 📂connectivity
@@ -34,17 +34,27 @@ $Env:TF_VAR_az_ad_sp_secret = "[SERVICE_PRINCIPAL_SECRET]";
  ┃ ┃ ┗ 📂management
  ┃ ┣ 📂modules
  ┃ ┃ ┣ 📂aks
- ┃ ┃ ┣ 📂keyvault
+ ┃ ┃ ┃ ┣ 📜main.tf
  ┃ ┃ ┣ 📂managed-identity
- ┃ ┃ ┣ 📂network
+ ┃ ┃ ┃ ┣ 📜main.tf
+ ┃ ┃ ┣ 📂networking
+ ┃ ┃ ┃ ┣ 📂dns
+ ┃ ┃ ┃ ┗ 📂virtual_network
+ ┃ ┃ ┃ ┃ ┣ 📂subnet
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜main.tf
+ ┃ ┃ ┃ ┃ ┣ 📜main.tf
+ ┃ ┃ ┣ 📂security
+ ┃ ┃ ┃ ┣ 📂keyvault
+ ┃ ┃ ┃ ┃ ┣ 📜main.tf
+ ┃ ┃ ┃ ┗ 📂keyvault_key
+ ┃ ┃ ┃ ┃ ┣ 📜main.tf
  ┃ ┃ ┣ 📂sql-db
  ┃ ┃ ┗ 📂sql-server
  ┃ ┗ 📂non_prod
  ┃ ┃ ┣ 📂remote-state
  ┃ ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┃ ┗ 📜variables.tf
  ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┗ 📜variables.tf
+ ┃ ┃ ┣ 📜README.md
  ┣ 📜.gitignore
  ┗ 📜README.md
 ```
