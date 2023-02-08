@@ -56,3 +56,24 @@ The remote state is configured by subscription.
 | Resource Type| Composition | Example    | Obs. |
 |--------------|-------------|------------|------|
 | Resource Group| rg-[app or service name]-[subscription purpose]-[###] | rg-tfstate-prod-001| N/A|
+
+
+
+## AKS
+
+### Azure AD Workload Identity
+
+Workloads deployed in Kubernetes clusters require Azure AD application credentials or managed identities to access Azure AD protected resources, such as Azure Key Vault and Microsoft Graph. The Azure AD Pod Identity open-source project provided a way to avoid needing these secrets, by using Azure managed identities.
+
+Azure AD Workload Identity for Kubernetes integrates with the capabilities native to Kubernetes to federate with external identity providers.
+
+In this model, the Kubernetes cluster becomes a token issuer, issuing tokens to Kubernetes Service Accounts. These service account tokens can be configured to be trusted on Azure AD applications or user-assigned managed identities. Workload can exchange a service account token projected to its volume for an Azure AD access token using the Azure Identity SDKs or the Microsoft Authentication Library (MSAL).
+
+More details: https://azure.github.io/azure-workload-identity/docs/introduction.html
+
+
+#### Workload Identity Usage
+
+- Kubernetes Service Account
+- Managed Identities or Azure AD application
+
