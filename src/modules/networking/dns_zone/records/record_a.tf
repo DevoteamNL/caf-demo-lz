@@ -9,7 +9,7 @@ resource "azurerm_dns_a_record" "a" {
   resource_group_name = var.resource_group_name
   ttl                 = try(each.value.ttl, 300)
   records             = try(each.value.records, null)
-  tags                = merge(var.base_tags, try(each.value.tags, {}))
+  tags                = each.value.tags
 }
 
 resource "azurerm_dns_a_record" "a_dns_zone_record" {
@@ -22,7 +22,7 @@ resource "azurerm_dns_a_record" "a_dns_zone_record" {
   zone_name           = var.zone_name
   resource_group_name = var.resource_group_name
   ttl                 = try(each.value.ttl, 300)
-  tags                = merge(var.base_tags, try(each.value.tags, {}))
+  tags                = each.value.tags
   target_resource_id  = azurerm_dns_a_record.a[each.value.resource_id.dns_zone_record.key].id
 }
 
@@ -36,6 +36,6 @@ resource "azurerm_dns_a_record" "a_public_ip_address" {
   zone_name           = var.zone_name
   resource_group_name = var.resource_group_name
   ttl                 = try(each.value.ttl, 300)
-  tags                = merge(var.base_tags, try(each.value.tags, {}))
+  tags                = each.value.tags
   target_resource_id  = var.resource_ids.public_ip_addresses[each.value.resource_id.public_ip_address.key].id
 }
