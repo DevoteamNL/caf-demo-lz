@@ -7,18 +7,17 @@ global_settings = {
     }
 }
 
-
 resource_groups = {
     rg_main_group = {
-        name = "rafaelteste1"
+        name = "dvt-lz-nonprod"
+        region = "region1"
     }
 }
-
 
 keyvaults = {
     nonprodkv01 = {
         name               = "secrets"
-        resource_group_key = "kv_region1"
+        resource_group_key = "rg_main_group"
         sku_name           = "standard"
     }
 }

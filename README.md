@@ -4,6 +4,8 @@
 
 This repo contains the terraform code to implement an Azure Landing Zone to Budget Thuis. The modules are developmed using the Microsoft Cloud Adoption Framework for Azure. To get more details follow the link: https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/
 
+This code is based on the terraform-azurerm-caf module: https://github.com/aztfmod/terraform-azurerm-caf
+
 
 ## Development Workspace requirements
  - Terraform
@@ -11,79 +13,132 @@ This repo contains the terraform code to implement an Azure Landing Zone to Budg
  - Git Client
 
 
-## Setup Azure Service Principal for local environment
+## The project structure
 
-To run the commands locally you will need to setup the sensitive variables using Environment variables, to setup it using Powershell, please use the following commands:
-
-```powershell
-
-$Env:TF_VAR_az_ad_sp_appId = "[SERVICE_PRINCIPAL_CLIENT_ID]"; 
-$Env:TF_VAR_az_ad_sp_secret = "[SERVICE_PRINCIPAL_SECRET]";
-
-```
-
-
-## Project Structure
-
-```
-📦budget-thuis-lz
+📦budget-thuis-lz 
  ┣ 📂src
- ┃ ┣ 📂core
- ┃ ┃ ┣ 📂connectivity
- ┃ ┃ ┣ 📂identity
- ┃ ┃ ┗ 📂management
- ┃ ┣ 📂modules
- ┃ ┃ ┣ 📂aks
- ┃ ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┣ 📂managed-identity
- ┃ ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┣ 📂networking
- ┃ ┃ ┃ ┣ 📂dns
- ┃ ┃ ┃ ┗ 📂virtual_network
- ┃ ┃ ┃ ┃ ┣ 📂subnet
+ ┃ ┣ 📂caf
+ ┃ ┃ ┣ 📂core
+ ┃ ┃ ┗ 📂workload
+ ┃ ┃ ┃ ┣ 📂nonprod 
+ ┃ ┃ ┃ ┃ ┣ 📜landing-zone.tfvars
+ ┃ ┃ ┃ ┃ ┣ 📜main.tf
+ ┃ ┃ ┃ ┃ ┣ 📜terraform.tfstate
+ ┃ ┃ ┃ ┃ ┗ 📜variables.tf
+ ┃ ┃ ┃ ┗ 📂prod
+ ┃ ┗ 📂dvt-caf
+ ┃ ┃ ┣ 📂modules
+ ┃ ┃ ┃ ┣ 📂[module_name]
+ ┃ ┃ ┃ ┃ ┣ 📜main.tf
+ ┃ ┃ ┃ ┃ ┣ 📜output.tf
+ ┃ ┃ ┃ ┃ ┣ 📜variables.tf
+ ┃ ┃ ┃ ┃ ┣ 📂[submodule_name]
  ┃ ┃ ┃ ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┣ 📂security
- ┃ ┃ ┃ ┣ 📂keyvault
- ┃ ┃ ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┃ ┗ 📂keyvault_key
- ┃ ┃ ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┣ 📂sql-db
- ┃ ┃ ┗ 📂sql-server
- ┃ ┗ 📂non_prod
- ┃ ┃ ┣ 📂remote-state
- ┃ ┃ ┃ ┣ 📜main.tf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜output.tf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜variables.tf
+ ┃ ┃ ┣ 📜local.remote_objects.tf
+ ┃ ┃ ┣ 📜locals.combined_objects.tf
+ ┃ ┃ ┣ 📜locals.tf
  ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┣ 📜README.md
+ ┃ ┃ ┣ 📜module.tf
+ ┃ ┃ ┣ 📜output.tf
+ ┃ ┃ ┣ 📜variables.tf
+ ┃ ┃ ┗ 📜[module_wrapper_name].tf
  ┣ 📜.gitignore
  ┗ 📜README.md
-```
 
-The remote state is configured by subscription.
+- 📂[module_name] - The module folder contains the terraform configuration to an specific azure resources.
+- 📂[submodule_name] - The submodule folder contains the terraform configuration to an specific "sub-resource" like an subnet is part of a virtual network.
+ - 📜[module_wrapper_name].tf - The module wrapper is to improve the code reuse and organize the creation of resources from a same type. 
 
 ## Resources naming convention
 
-| Resource Type| Composition | Example    | Obs. |
-|--------------|-------------|------------|------|
-| Resource Group| rg-[app or service name]-[subscription purpose]-[###] | rg-tfstate-prod-001| N/A|
+The naming convention of this project is based on the Cloud Adoption Framework for Azure - Terraform module, using the "azurecaf_name" resource, to configure a standard naming convention across the landing zones. See the documentation [here](https://github.com/aztfmod/terraform-azurerm-caf/blob/main/documentation/conventions.md). 
+
+## Setup the Landing Zone
+
+- Configure the backend (remote tfstate)
+
+### The main.tf file
+
+``` 
+module "dvt-caf" {
+    source = "../../../dvt-caf"    
+    providers = {
+        //Add the Alias to the provider
+        azurerm.vhub = azurerm.vhub
+    }
+
+    //The Global Settings
+    global_settings = var.global_settings
+    
+    //Add the Landing Zone Resource Groups
+    resource_groups = var.resource_groups
+    
+    logged_user_objectId = var.service_principal_id    
+    current_landingzone_key = var.landing_zone_key
+    tenant_id = var.tenant_id
+    
+    // Add the Azure Resources using dynamic variables
+    keyvaults = var.keyvaults
+}
+```
+
+### The "variables.tf" file
+
+The variables file is basically a template of wich data will be passed to the module using the .tfvars file.
+
+``` 
+variable "global_settings" {
+}
+
+variable "resource_groups" {
+  default = {}
+}
+
+variable "keyvaults" {
+  default = {}
+}
+```
+
+### The "landing-zone.tfvars" file
+
+
+This file has the settings, and the resources contained in the landing zone, this is a sample file with only one resource group and one key vault. The global_settings object has the naming convetion configurationa and the default and available regions to this landing zone. Inside each resource configuration is possible to refer the region that you want to put your resource.
+
+``` 
+global_settings = {       
+    random_length  = 4
+    default_region = "region1"      
+    regions = {
+      region1 = "westeurope"
+      region2 = "northeurope"
+    }
+}
+
+resource_groups = {
+    rg_main_group = {
+        name = "dvt-lz-nonprod"
+        region = "region1"
+    }
+}
+
+keyvaults = {
+    nonprodkv01 = {
+        name               = "secrets"
+        resource_group_key = "rg_main_group"
+        sku_name           = "standard"
+    }
+}
+```
+
+
+### Global Configuration
+
+The global_setting referenced in the Devoteam CAF Module is necessary to provide a set of standards to the landing zone resources, based on the Microsoft Cloud Adoption framework.
 
 
 
-## AKS
-
-### Azure AD Workload Identity
-
-Workloads deployed in Kubernetes clusters require Azure AD application credentials or managed identities to access Azure AD protected resources, such as Azure Key Vault and Microsoft Graph. The Azure AD Pod Identity open-source project provided a way to avoid needing these secrets, by using Azure managed identities.
-
-Azure AD Workload Identity for Kubernetes integrates with the capabilities native to Kubernetes to federate with external identity providers.
-
-In this model, the Kubernetes cluster becomes a token issuer, issuing tokens to Kubernetes Service Accounts. These service account tokens can be configured to be trusted on Azure AD applications or user-assigned managed identities. Workload can exchange a service account token projected to its volume for an Azure AD access token using the Azure Identity SDKs or the Microsoft Authentication Library (MSAL).
-
-More details: https://azure.github.io/azure-workload-identity/docs/introduction.html
 
 
-#### Workload Identity Usage
-
-- Kubernetes Service Account
-- Managed Identities or Azure AD application
 

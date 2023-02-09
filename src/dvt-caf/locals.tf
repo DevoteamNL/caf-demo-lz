@@ -20,8 +20,7 @@ locals {
     azuread_service_principals          = try(var.azuread.azuread_service_principals, {})
     azuread_users                       = try(var.azuread.azuread_users, {})
   }
-
-  resource_groups = var.resource_groups
+ 
 
   client_config = var.client_config == {} ? {
     client_id               = data.azurerm_client_config.current.client_id
