@@ -28,33 +28,31 @@ $Env:TF_VAR_az_ad_sp_secret = "[SERVICE_PRINCIPAL_SECRET]";
 ```
 📦budget-thuis-lz
  ┣ 📂src
- ┃ ┣ 📂core
- ┃ ┃ ┣ 📂connectivity
- ┃ ┃ ┣ 📂identity
- ┃ ┃ ┗ 📂management
- ┃ ┣ 📂modules
- ┃ ┃ ┣ 📂aks
- ┃ ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┣ 📂managed-identity
- ┃ ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┣ 📂networking
- ┃ ┃ ┃ ┣ 📂dns
- ┃ ┃ ┃ ┗ 📂virtual_network
- ┃ ┃ ┃ ┃ ┣ 📂subnet
+ ┃ ┗ 📂caf
+ ┃ ┃ ┣ 📂core
+ ┃ ┃ ┗ 📂workload
+ ┃ ┃ ┃ ┣ 📂nonprod
+ ┃ ┃ ┃ ┃ ┣ 📂compute
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜aks_clusters.tfvars
+ ┃ ┃ ┃ ┃ ┣ 📂database
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜mssql_databases.tfvars
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜mssql_servers.tfvars
+ ┃ ┃ ┃ ┃ ┣ 📂diagnostics
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜diagnostics.tfvars
+ ┃ ┃ ┃ ┃ ┣ 📂networking
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜networking.tfvars
+ ┃ ┃ ┃ ┃ ┣ 📂remotestate
  ┃ ┃ ┃ ┃ ┃ ┣ 📜main.tf
+ ┃ ┃ ┃ ┃ ┣ 📂security
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜keyvaults.tfvars
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜managed_identities.tfvars
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜role_mapping.tfvars 
+ ┃ ┃ ┃ ┃ ┣ 📜global.tfvars
  ┃ ┃ ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┣ 📂security
- ┃ ┃ ┃ ┣ 📂keyvault
- ┃ ┃ ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┃ ┗ 📂keyvault_key
- ┃ ┃ ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┣ 📂sql-db
- ┃ ┃ ┗ 📂sql-server
- ┃ ┗ 📂non_prod
- ┃ ┃ ┣ 📂remote-state
- ┃ ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┣ 📜README.md
+ ┃ ┃ ┃ ┃ ┣ 📜module.tf
+ ┃ ┃ ┃ ┃ ┣ 📜plan.ps1
+ ┃ ┃ ┃ ┃ ┗ 📜variables.tf
+ ┃ ┃ ┃ ┗ 📂prod
  ┣ 📜.gitignore
  ┗ 📜README.md
 ```
@@ -63,27 +61,74 @@ The remote state is configured by subscription.
 
 ## Resources naming convention
 
-| Resource Type| Composition | Example    | Obs. |
-|--------------|-------------|------------|------|
-| Resource Group| rg-[app or service name]-[subscription purpose]-[###] | rg-tfstate-prod-001| N/A|
+Azure Cloud Adoption Framework - Terraform provider
+
+This provider implements a set of methodologies for naming convention implementation including the default Microsoft Cloud Adoption Framework for Azure recommendations as per https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/naming-and-tagging.
+
+
+The azurecaf_name resource allows you to:
+
+ - Clean inputs to make sure they remain compliant with the allowed patterns for each Azure resource.
+ - Generate random characters to append at the end of the resource name.
+ - Handle prefix, suffixes (either manual or as per the Azure cloud adoption framework resource conventions).
+ - Allow passthrough mode (simply validate the output).
+
+
+## Usage
+
+
+```terraform
+
+module "caf" {
+  source  = "aztfmod/caf/azurerm"
+  version = "~> 5.4.0"
+  global_settings      = merge((var.override_prefix == "" ? {} : { prefix = var.override_prefix }), var.global_settings)
+  logged_user_objectId = "[logged_user_objectid]" 
+  tags                 = var.tags
+  resource_groups      = var.resource_groups
+  keyvaults            = var.keyvaults
+  managed_identities   = var.managed_identities
+  role_mapping         = var.role_mapping 
+  azuread = {
+    azuread_groups  = var.azuread_groups
+  }
+  networking = {
+    vnets = var.vnets
+  }
+}
+
+```
+
+The CAF module is a terraform module to deploy azure resources based on Microsoft Cloud Adoption Framewrork. This terraform module was used to deploy the landing zone. More deatails in: https://github.com/aztfmod/terraform-azurerm-caf
 
 
 
-## AKS
-
-### Azure AD Workload Identity
-
-Workloads deployed in Kubernetes clusters require Azure AD application credentials or managed identities to access Azure AD protected resources, such as Azure Key Vault and Microsoft Graph. The Azure AD Pod Identity open-source project provided a way to avoid needing these secrets, by using Azure managed identities.
-
-Azure AD Workload Identity for Kubernetes integrates with the capabilities native to Kubernetes to federate with external identity providers.
-
-In this model, the Kubernetes cluster becomes a token issuer, issuing tokens to Kubernetes Service Accounts. These service account tokens can be configured to be trusted on Azure AD applications or user-assigned managed identities. Workload can exchange a service account token projected to its volume for an Azure AD access token using the Azure Identity SDKs or the Microsoft Authentication Library (MSAL).
-
-More details: https://azure.github.io/azure-workload-identity/docs/introduction.html
 
 
-#### Workload Identity Usage
+### Global Settings 
 
-- Kubernetes Service Account
-- Managed Identities or Azure AD application
+The Global Settings variable is present in all modules to padronize some configuration as Default Region, Tags, etc. Usage:
+
+``` terraform
+
+global_settings = {
+    default_region = "region1"
+    regions = {
+      region1 = "westeurope"
+    }
+}
+
+resource_groups = {
+  aks_re1 = {
+    name   = "aks-re1"
+    region = "region1"
+  }
+}
+
+
+
+```
+
+
+
 
