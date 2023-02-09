@@ -22,8 +22,7 @@ This code is based on the terraform-azurerm-caf module: https://github.com/aztfm
  ┃ ┃ ┗ 📂workload
  ┃ ┃ ┃ ┣ 📂nonprod 
  ┃ ┃ ┃ ┃ ┣ 📜landing-zone.tfvars
- ┃ ┃ ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┃ ┃ ┣ 📜terraform.tfstate
+ ┃ ┃ ┃ ┃ ┣ 📜main.tf 
  ┃ ┃ ┃ ┃ ┗ 📜variables.tf
  ┃ ┃ ┃ ┗ 📂prod
  ┃ ┗ 📂dvt-caf
