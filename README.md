@@ -14,7 +14,7 @@ This code is based on the terraform-azurerm-caf module: https://github.com/aztfm
 
 
 ## The project structure
-
+```
 📦budget-thuis-lz 
  ┣ 📂src
  ┃ ┣ 📂caf
@@ -46,7 +46,7 @@ This code is based on the terraform-azurerm-caf module: https://github.com/aztfm
  ┃ ┃ ┗ 📜[module_wrapper_name].tf
  ┣ 📜.gitignore
  ┗ 📜README.md
-
+```
 - 📂[module_name] - The module folder contains the terraform configuration to an specific azure resources.
 - 📂[submodule_name] - The submodule folder contains the terraform configuration to an specific "sub-resource" like an subnet is part of a virtual network.
  - 📜[module_wrapper_name].tf - The module wrapper is to improve the code reuse and organize the creation of resources from a same type. 
