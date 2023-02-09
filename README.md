@@ -15,6 +15,38 @@ This code is based on the terraform-azurerm-caf module: https://github.com/aztfm
 
 ## The project structure
 
+📦budget-thuis-lz 
+ ┣ 📂src
+ ┃ ┣ 📂caf
+ ┃ ┃ ┣ 📂core
+ ┃ ┃ ┗ 📂workload
+ ┃ ┃ ┃ ┣ 📂nonprod 
+ ┃ ┃ ┃ ┃ ┣ 📜landing-zone.tfvars
+ ┃ ┃ ┃ ┃ ┣ 📜main.tf
+ ┃ ┃ ┃ ┃ ┣ 📜terraform.tfstate
+ ┃ ┃ ┃ ┃ ┗ 📜variables.tf
+ ┃ ┃ ┃ ┗ 📂prod
+ ┃ ┗ 📂dvt-caf
+ ┃ ┃ ┣ 📂modules
+ ┃ ┃ ┃ ┣ 📂[module_name]
+ ┃ ┃ ┃ ┃ ┣ 📜main.tf
+ ┃ ┃ ┃ ┃ ┣ 📜output.tf
+ ┃ ┃ ┃ ┃ ┣ 📜variables.tf
+ ┃ ┃ ┃ ┃ ┣ 📂[submodule_name]
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜main.tf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜output.tf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜variables.tf
+ ┃ ┃ ┣ 📜local.remote_objects.tf
+ ┃ ┃ ┣ 📜locals.combined_objects.tf
+ ┃ ┃ ┣ 📜locals.tf
+ ┃ ┃ ┣ 📜main.tf
+ ┃ ┃ ┣ 📜module.tf
+ ┃ ┃ ┣ 📜output.tf
+ ┃ ┃ ┣ 📜variables.tf
+ ┃ ┃ ┗ 📜[module_wrapper_name].tf
+ ┣ 📜.gitignore
+ ┗ 📜README.md
+
 - 📂[module_name] - The module folder contains the terraform configuration to an specific azure resources.
 - 📂[submodule_name] - The submodule folder contains the terraform configuration to an specific "sub-resource" like an subnet is part of a virtual network.
  - 📜[module_wrapper_name].tf - The module wrapper is to improve the code reuse and organize the creation of resources from a same type. 
