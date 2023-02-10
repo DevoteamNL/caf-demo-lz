@@ -1,3 +1,24 @@
+#== AUTHENTICATION AZURE RM PROVIDER ==#
+
+variable "client_id" {
+  sensitive = true
+}
+
+variable "client_secret" {
+  sensitive = true
+}
+
+variable "subscription_id" {
+  sensitive = true
+}
+
+variable "tenant_id" {
+  sensitive = true
+}
+
+#======================================#
+
+
 variable "global_settings" {
 }
 

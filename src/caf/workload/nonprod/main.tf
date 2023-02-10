@@ -13,10 +13,10 @@ terraform {
 
 provider "azurerm" {
   alias = "vhub"
-  subscription_id = "c1cbea85-2d1c-4f36-a6d7-636df95de7e0"
-  tenant_id = "95f1c0e9-c50b-4882-87de-bb2470f0d5ad"
-  client_id = "c76dfb9d-243c-402c-a607-2d40f48f0061"
-  client_secret = "lC68Q~Q5EH4B95m3zAlOW4eJoB8YtPQHylDFQb0w"  
+  subscription_id = var.subscription_id
+  tenant_id = var.tenant_id
+  client_id = var.client_id
+  client_secret = var.client_secret
   features {}
 }
 
@@ -30,9 +30,9 @@ module "dvt-caf" {
     }
     global_settings = var.global_settings
     resource_groups = var.resource_groups
-    logged_user_objectId = "c76dfb9d-243c-402c-a607-2d40f48f0061"    
+    logged_user_objectId = var.client_id   
     current_landingzone_key = "nonprod"
-    tenant_id = "95f1c0e9-c50b-4882-87de-bb2470f0d5ad"
+    tenant_id = var.tenant_id
     keyvaults = var.keyvaults
     compute = {
       aks_clusters = var.aks_clusters

@@ -1,7 +1,8 @@
 # GLOBAL SETTINGS
 global_settings = {
-  random_length  = 4
+  random_length  = 0
   default_region = "region1"
+  passthrough = true
   regions = {
     region1 = "westeurope"
     region2 = "northeurope"
@@ -46,11 +47,6 @@ vnets = {
         name    = "aks_nodepool_user2"
         cidr    = ["100.64.50.0/24"]
         nsg_key = "azure_kubernetes_cluster_nsg"
-      }
-      AzureBastionSubnet = {
-        name    = "AzureBastionSubnet"
-        cidr    = ["100.64.51.64/27"]
-        nsg_key = "azure_bastion_nsg"
       }
       private_endpoints = {
         name                                           = "private_endpoints"
@@ -141,7 +137,6 @@ network_security_group_definition = {
     ]
   }
   azure_bastion_nsg = {
-
     nsg = [
       {
         name                       = "bastion-in-allow",
@@ -210,36 +205,8 @@ network_security_group_definition = {
         destination_address_prefix = "AzureCloud"
       }
     ]
-  }
-  azure_mssql_nsg = {
-    nsg = [
-      {
-        name                       = "mssql-1433-in-allow",
-        priority                   = "100"
-        direction                  = "Inbound"
-        access                     = "Allow"
-        protocol                   = "tcp"
-        source_port_range          = "*"
-        destination_port_range     = "1433"
-        source_address_prefix      = "*"
-        destination_address_prefix = "*"
-      },
-      {
-        name                       = "mssql-1433-out-allow",
-        priority                   = "110"
-        direction                  = "Outbound"
-        access                     = "Allow"
-        protocol                   = "tcp"
-        source_port_range          = "*"
-        destination_port_range     = "1433"
-        source_address_prefix      = "*"
-        destination_address_prefix = "*"
-      }
-    ]
-  }
+  } 
 }
-
-
 
 # KEY VAULT
 keyvaults = {
@@ -256,6 +223,7 @@ keyvaults = {
 }
 
 keyvault_keys = {
+  
   //SQL ADMIN PASS KEYVAULT KEY
   sql_admin_kv_key = {
 
@@ -264,7 +232,6 @@ keyvault_keys = {
 }
 
 # CONTAINER 
-
 azure_container_registries = {
   acr1 = {
     name               = "lz-nonprod-acr"
@@ -325,9 +292,7 @@ aks_clusters = {
         "project" = "Non Prod Test Application"
       }
     }
-
     node_resource_group_name = "rg-lz-nonprod"
-
     addon_profile = {
       azure_keyvault_secrets_provider = {
         secret_rotation_enabled  = true
