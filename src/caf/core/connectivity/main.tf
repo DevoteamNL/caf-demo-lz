@@ -38,3 +38,4 @@ module "dvt-caf" {
     networking = {
         vnets = var.vnets        
     }
+}
