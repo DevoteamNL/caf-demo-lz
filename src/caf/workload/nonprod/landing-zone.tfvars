@@ -1,4 +1,7 @@
-# GLOBAL SETTINGS
+//=============================================//
+//============= GLOBAL SETTINGS ===============//
+//=============================================//
+
 global_settings = {
   random_length  = 0
   default_region = "region1"
@@ -9,7 +12,11 @@ global_settings = {
   }
 }
 
-# RESOURCE GROUPS
+//=============================================//
+//================ GOVERNANCE =================//
+//=============================================//
+
+
 resource_groups = {
   rg-lz-nonprod = {
     name   = "dvt-lz-nonprod"
@@ -18,9 +25,9 @@ resource_groups = {
 }
 
 
-
-
-# NETWORKING
+//=============================================//
+//================ NETWORKING =================//
+//=============================================//
 
 vnets = {
   // AKS SPOKE VNET
@@ -64,7 +71,7 @@ vnets = {
 }
 
 network_security_group_definition = {
-  # This entry is applied to all subnets with no NSG defined
+  // This entry is applied to all subnets with no NSG defined
   empty_nsg = {}
   azure_kubernetes_cluster_nsg = {
     nsg = [
@@ -208,7 +215,12 @@ network_security_group_definition = {
   } 
 }
 
-# KEY VAULT
+
+//=============================================//
+//================= SECURITY ==================//
+//=============================================//
+
+//KEY VAULT
 keyvaults = {
   nonprodkv01 = {
     name               = "secrets"
@@ -222,16 +234,20 @@ keyvaults = {
   }
 }
 
-keyvault_keys = {
-  
-  //SQL ADMIN PASS KEYVAULT KEY
+//KEYVAULT KEYS
+keyvault_keys = {  
+
   sql_admin_kv_key = {
 
   }
-
 }
 
-# CONTAINER 
+
+//=============================================//
+//================== COMPUTE ==================//
+//=============================================//
+
+// CONTAINER REGISTRY
 azure_container_registries = {
   acr1 = {
     name               = "lz-nonprod-acr"
@@ -241,11 +257,7 @@ azure_container_registries = {
   }
 }
 
-
-
-# COMPUTE
-
-## AKS
+// AKS
 aks_clusters = {
   aks_nonprod = {
     name               = "akscluster-re1-001"
@@ -259,7 +271,7 @@ aks_clusters = {
       network_plugin    = "azure"
       load_balancer_sku = "Standard"
     }
-    # enable_rbac = true
+    // enable_rbac = true
     role_based_access_control = {
       enabled = true
       azure_active_directory = {
@@ -302,11 +314,11 @@ aks_clusters = {
   }
 }
 
+//=============================================//
+//================= DATABASE ==================//
+//=============================================//
 
-
-# DATABASE
-
-## MSSQL
+// MSSQL
 mssql_servers = {
   mssql01 = {
     name                = "sql-rg1"
