@@ -235,8 +235,7 @@ keyvaults = {
 }
 
 //KEYVAULT KEYS
-keyvault_keys = {  
-
+keyvault_keys = { 
   sql_admin_kv_key = {
 
   }
@@ -259,6 +258,7 @@ azure_container_registries = {
 
 // AKS
 aks_clusters = {
+  
   aks_nonprod = {
     name               = "akscluster-re1-001"
     resource_group_key = "rg-lz-nonprod"
@@ -289,8 +289,7 @@ aks_clusters = {
     }
     default_node_pool = {
       name    = "sharedsvc"
-      vm_size = "Standard_F4s_v2"
-      subnet_key            = "aks_nodepool_system"
+      vm_size = "Standard_F4s_v2"      
       subnet = {
         key = "aks_nodepool_system"
         #resource_id = "/subscriptions/97958dac-xxxx-xxxx-xxxx-9f436fa73bd4/resourceGroups/qxgc-rg-aks-re1/providers/Microsoft.Network/virtualNetworks/qxgc-vnet-aks/subnets/qxgc-snet-aks_nodepool_system"
