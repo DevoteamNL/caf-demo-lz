@@ -54,6 +54,7 @@ This code is based on the terraform-azurerm-caf module: https://github.com/aztfm
 
 ![Devoteam CAF Terraform Module](assets/architecture.jpeg)
 
+See details: [Lucid Chart](https://lucid.app/lucidchart/8214442d-934b-49cc-a34c-5924447475e0/edit?viewport_loc=-2324%2C-843%2C5450%2C2591%2C0_0&invitationId=inv_5c53211b-8739-42af-b48f-d0e178efcb95)
 
 ## Resources naming convention
 
