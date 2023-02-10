@@ -46,9 +46,14 @@ This code is based on the terraform-azurerm-caf module: https://github.com/aztfm
  ┣ 📜.gitignore
  ┗ 📜README.md
 ```
-- 📂[module_name] - The module folder contains the terraform configuration to an specific azure resources.
-- 📂[submodule_name] - The submodule folder contains the terraform configuration to an specific "sub-resource" like an subnet is part of a virtual network.
+ - 📂[module_name] - The module folder contains the terraform configuration to an specific azure resources.
+ - 📂[submodule_name] - The submodule folder contains the terraform configuration to an specific "sub-resource" like an subnet is part of a virtual network.
  - 📜[module_wrapper_name].tf - The module wrapper is to improve the code reuse and organize the creation of resources from a same type. 
+
+## Architecture
+
+![Devoteam CAF Terraform Module](assets/architecture.jpeg)
+
 
 ## Resources naming convention
 

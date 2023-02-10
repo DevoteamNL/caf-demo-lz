@@ -34,5 +34,13 @@ module "dvt-caf" {
     current_landingzone_key = "nonprod"
     tenant_id = "95f1c0e9-c50b-4882-87de-bb2470f0d5ad"
     keyvaults = var.keyvaults
+    compute = {
+      aks_clusters = var.aks_clusters
+      azure_container_registries = var.azure_container_registries
+    }
+    networking = {
+        vnets = var.vnets        
+    }
+
 }
 
