@@ -15,34 +15,34 @@ This code is based on the terraform-azurerm-caf module: https://github.com/aztfm
 
 ## The project structure
 ```
-📦budget-thuis-lz 
+📦budget-thuis-lz
+ ┣ 📂assets
+ ┃ ┗ 📜architecture.jpeg
  ┣ 📂src
  ┃ ┣ 📂caf
  ┃ ┃ ┣ 📂core
- ┃ ┃ ┗ 📂workload
- ┃ ┃ ┃ ┣ 📂nonprod 
- ┃ ┃ ┃ ┃ ┣ 📜landing-zone.tfvars
- ┃ ┃ ┃ ┃ ┣ 📜main.tf 
- ┃ ┃ ┃ ┃ ┗ 📜variables.tf
- ┃ ┃ ┃ ┗ 📂prod
- ┃ ┗ 📂dvt-caf
+ ┃ ┃ ┃ ┣ 📂connectivity
+ ┃ ┃ ┃ ┃ ┣ 📜landingzone.tfvars
+ ┃ ┃ ┃ ┃ ┗ 📜network_security.tfvars
+ ┃ ┃ ┃ ┣ 📂identity
+ ┃ ┃ ┃ ┃ ┗ 📜landingzone.tfvars
+ ┃ ┃ ┃ ┗ 📂management
+ ┃ ┃ ┃ ┃ ┗ 📜landingzone.tfvars
+ ┃ ┃ ┣ 📂workload
+ ┃ ┃ ┃ ┣ 📂nonprod
+ ┃ ┃ ┃ ┃ ┗ 📜landingzone.tfvars
+ ┃ ┃ ┃ ┣ 📂prod
+ ┃ ┃ ┃ ┗ 📜landingzone.tfvars
+ ┃ ┃ ┗ 📜global-settings.tfvars
+ ┃ ┣ 📂dvt-caf
  ┃ ┃ ┣ 📂modules
- ┃ ┃ ┃ ┣ 📂[module_name]
- ┃ ┃ ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┃ ┃ ┣ 📜output.tf
- ┃ ┃ ┃ ┃ ┣ 📜variables.tf
- ┃ ┃ ┃ ┃ ┣ 📂[submodule_name]
- ┃ ┃ ┃ ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┃ ┃ ┃ ┣ 📜output.tf
- ┃ ┃ ┃ ┃ ┃ ┣ 📜variables.tf
- ┃ ┃ ┣ 📜local.remote_objects.tf
- ┃ ┃ ┣ 📜locals.combined_objects.tf
- ┃ ┃ ┣ 📜locals.tf
+ ┃ ┗ 📂dvt-caf-landingzone
+ ┃ ┃ ┣ 📜connectivity_plan.ps1
+ ┃ ┃ ┣ 📜landingzone.tf
+ ┃ ┃ ┣ 📜local.remote.tf
+ ┃ ┃ ┣ 📜locals.remote_tfstates.tf
  ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┣ 📜module.tf
- ┃ ┃ ┣ 📜output.tf
- ┃ ┃ ┣ 📜variables.tf
- ┃ ┃ ┗ 📜[module_wrapper_name].tf
+ ┃ ┃ ┗ 📜variables.tf
  ┣ 📜.gitignore
  ┗ 📜README.md
 ```
@@ -62,79 +62,34 @@ The naming convention of this project is based on the Cloud Adoption Framework f
 
 ## Setup the Landing Zone
 
-- Configure the backend (remote tfstate)
 
-### The main.tf file
 
-``` 
-module "dvt-caf" {
-    source = "../../../dvt-caf"    
-    providers = {
-        //Add the Alias to the provider
-        azurerm.vhub = azurerm.vhub
-    }
+### The "globalsettings.tfars" file
 
-    //The Global Settings
-    global_settings = var.global_settings
-    
-    //Add the Landing Zone Resource Groups
-    resource_groups = var.resource_groups
-    
-    logged_user_objectId = var.service_principal_id    
-    current_landingzone_key = var.landing_zone_key
-    tenant_id = var.tenant_id
-    
-    // Add the Azure Resources using dynamic variables
-    keyvaults = var.keyvaults
-}
-```
+Global Settings. TO DO.
 
-### The "variables.tf" file
 
-The variables file is basically a template of wich data will be passed to the module using the .tfvars file.
+### The "landingzone.tfvars" file
+
+
+This file has the settings, and the resources contained in the landing zone.
 
 ``` 
-variable "global_settings" {
+landingzone = {
+  backend_type = "azurerm"
+  key          = "connectivity"
 }
 
-variable "resource_groups" {
-  default = {}
-}
-
-variable "keyvaults" {
-  default = {}
-}
-```
-
-### The "landing-zone.tfvars" file
-
-
-This file has the settings, and the resources contained in the landing zone, this is a sample file with only one resource group and one key vault. The global_settings object has the naming convetion configurationa and the default and available regions to this landing zone. Inside each resource configuration is possible to refer the region that you want to put your resource.
-
-``` 
-global_settings = {       
-    random_length  = 4
-    default_region = "region1"      
-    regions = {
-      region1 = "westeurope"
-      region2 = "northeurope"
-    }
-}
+environment = "production"
 
 resource_groups = {
-    rg_main_group = {
-        name = "dvt-lz-nonprod"
-        region = "region1"
-    }
+  hub-rg = {
+    name     = "conn-hub-rg"
+    location = "region1"
+
+  }
 }
 
-keyvaults = {
-    nonprodkv01 = {
-        name               = "secrets"
-        resource_group_key = "rg_main_group"
-        sku_name           = "standard"
-    }
-}
 ```
 
 
@@ -146,22 +101,7 @@ The global_setting referenced in the Devoteam CAF Module is necessary to provide
 
 
 ## Getting Started
-
-
-## Landing Zone configuration
-
-### Setup the remote state
-
- - Create the storage account
- - Create the container with the name: "(LANDING_ZONE_KEY)"
- - The remote state file will be landingzonekey_tfstate, like: connectivity_tfsate.
-
-```
-landingzone = {
-    name = "LANDING_ZONE_NAME" 
-}
-
-```
+ TO DO.
 
 
 
