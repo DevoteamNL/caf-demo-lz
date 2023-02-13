@@ -145,5 +145,18 @@ The global_setting referenced in the Devoteam CAF Module is necessary to provide
 
 
 
+## Getting Started
+
+
+## Landing Zone configuration
+
+```
+landingzone = {
+    name = "LANDING_ZONE_NAME" 
+}
+
+```
+
+
 
 
