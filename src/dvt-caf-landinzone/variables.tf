@@ -46,7 +46,7 @@ variable "regions" {
   type        = map(any)
   description = "List of the regions where services can be deployed. This impact the diagnostics logs settings"
   default = {
-    region1 = "australiaeast"
+    region1 = "westeurope"
   }
 }
 
