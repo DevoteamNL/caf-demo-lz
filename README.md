@@ -150,6 +150,12 @@ The global_setting referenced in the Devoteam CAF Module is necessary to provide
 
 ## Landing Zone configuration
 
+### Setup the remote state
+
+ - Create the storage account
+ - Create the container with the name: "(LANDING_ZONE_KEY)"
+ - The remote state file will be landingzonekey_tfstate, like: connectivity_tfsate.
+
 ```
 landingzone = {
     name = "LANDING_ZONE_NAME" 
@@ -157,6 +163,9 @@ landingzone = {
 
 ```
 
+
+
+ 
 
 
 
