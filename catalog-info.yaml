@@ -1,0 +1,21 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: budget-thuis-lz
+  description: Terraform code to implement an Azure Landing Zone to Budget Thuis
+  annotations:
+    github.com/project-slug: DevoteamNL/budget-thuis-lz
+    github.com/team-slug: DevoteamNL/m-cloud
+  tags:
+    - azure
+    - terraform
+    - hcl
+  links:
+    - url: https://github.com/DevoteamNL/budget-thuis-lz
+      title: Repository Homepage
+      icon: github
+spec:
+  type: automation
+  lifecycle: sandbox
+  owner: m-cloud
+  system: azure
