@@ -1,7 +1,10 @@
-variable "tenant_id" {}
+
+variable "remote_setup_key_names" {}
+
 variable "azurerm_client_id" {}
+
 variable "azurerm_client_secret" {}
-variable "subscription_id" {}
+
 
 # Map of the current tfstate
 variable "tfstate_storage_account_name" {
@@ -17,7 +20,7 @@ variable "tfstate_resource_group_name" {
   default = null
 }
 
-
+variable "tenant_id" {}
 variable "landingzone" {
   description = "The landing zone name is used to reference the tfstate in configuration files. Therefore while set it is recommended not to change"
 }
@@ -46,7 +49,7 @@ variable "regions" {
   type        = map(any)
   description = "List of the regions where services can be deployed. This impact the diagnostics logs settings"
   default = {
-    region1 = "westeurope"
+    region1 = "australiaeast"
   }
 }
 
@@ -79,21 +82,7 @@ variable "tf_name" {
 
 variable "resource_groups" {}
 
-variable "storage_accounts" {
-  default = {}
-}
-
-variable "keyvaults" {
-  default = {}
-}
-
-variable "keyvault_access_policies" {
-  default = {}
-}
-variable "keyvault_keys" {
-  default = {}
-}
-
+variable "storage_accounts" {}
 
 variable "subscriptions" {
   default = {}
@@ -139,8 +128,6 @@ variable "compute" {
   default = {}
 }
 
-
-
 variable "custom_role_definitions" {
   default = {}
 }
@@ -155,7 +142,6 @@ variable "tags" {
   type    = map(any)
   default = {}
 }
-
 
 
 variable "user_type" {}

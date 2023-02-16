@@ -1,11 +1,19 @@
-passthrough = false
-inherit_tags = false
-random_length = 3
-prefix = "caf"
-default_region = "region1"
-regions = {
-  region1 = "westeurope"
-  region2 = "northeurope"
+global_settings = {
+   passthrough = false
+  inherit_tags = false
+  random_length = 3
+  prefix = "caf"
+  default_region = "region1"
+  regions = {
+    region1 = "westeurope"
+    region2 = "northeurope"
+  }
 }
 
-user_type = "user"
+user_type = "service-principal"
+
+
+
+
+
+
