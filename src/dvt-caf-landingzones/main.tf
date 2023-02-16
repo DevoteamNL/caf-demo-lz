@@ -1,0 +1,70 @@
+terraform {
+  required_providers {
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.3.1"
+    }
+    external = {
+      source  = "hashicorp/external"
+      version = "~> 2.2.0"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.1.0"
+    }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 3.1.0"
+    }
+    azurecaf = {
+      source  = "aztfmod/azurecaf"
+      version = "~> 1.2.0"
+    }
+  }
+  required_version = ">= 0.15"
+}
+
+provider "azurerm" {  
+  features {}
+}
+
+provider "azurerm" {
+  alias                      = "vhub"
+  skip_provider_registration = true
+  features {}
+  subscription_id = var.backend.subscription_id
+  tenant_id       = var.backend.tenant_id
+  client_id       = var.backend.client_id
+  client_secret   = var.backend.client_secret
+}
+
+data "azurerm_client_config" "current" {}
+
+
+locals {  
+  # Update the tfstates map
+  tfstates = merge(
+    tomap(
+      {
+        (var.landingzone.key) = local.backend[var.landingzone.backend_type]
+      }
+    )
+    ,
+    try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.tfstates, {})
+  )
+
+
+  backend = {
+     azurerm = {
+      storage_account_name = var.landingzone.tfstates["current"].storage_account_name
+      container_name       = var.landingzone.tfstates["current"].container_name
+      resource_group_name  = var.landingzone.tfstates["current"].resource_group_name
+      key                  = var.landingzone.tfstates["current"].key      
+      tenant_id            = var.landingzone.tfstates["current"].tenant_id
+      subscription_id      = var.landingzone.tfstates["current"].subscription_id
+      
+    }
+  }
+
+}
+

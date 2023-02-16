@@ -28,12 +28,6 @@ terraform {
 
 
 provider "azurerm" {  
-  partner_id = "ca4078f8-9bc4-471b-ab5b-3af6b86a42c8"
-  client_id = var.azurerm_client_id
-  client_secret = var.azurerm_client_secret
-  subscription_id = var.subscription_id
-  tenant_id = var.tenant_id
-  # partner identifier for CAF Terraform landing zones.
   features {}
 }
 
@@ -42,16 +36,10 @@ resource "random_string" "prefix" {
   length  = 4
   special = false
   upper   = false
-  number  = false
+  numeric  = false
 }
 
-locals {
-  landingzone_tag = {
-    "landingzone" = var.landingzone.key
-  }
-  client_id = var.azurerm_client_id
-  tags = merge(local.global_settings.tags, local.landingzone_tag, { "environment" = local.global_settings.environment },  var.tags)
-
+locals { 
   global_settings = {
     default_region     = var.default_region
     environment        = var.environment
@@ -74,11 +62,11 @@ locals {
 
   backend = {
     azurerm = {
-      storage_account_name = module.landingzones.storage_accounts[var.landingzone.key].name
-      container_name       = module.landingzones.storage_accounts[var.landingzone.key].containers["tfstate"].name
-      resource_group_name  = module.landingzones.storage_accounts[var.landingzone.key].resource_group_name
+      storage_account_name = module.dvt-caf-remote-setup.storage_accounts[var.remote_setup_key_names.tfstates[0]].name
+      container_name       = module.dvt-caf-remote-setup.storage_accounts[var.remote_setup_key_names.tfstates[0]].containers["tfstate"].name
+      resource_group_name  = module.dvt-caf-remote-setup.storage_accounts[var.remote_setup_key_names.tfstates[0]].resource_group_name
       key                  = var.tf_name
-      level                = "level0"
+      level                = var.landingzone.level
       tenant_id            = data.azurerm_client_config.current.tenant_id
       subscription_id      = data.azurerm_client_config.current.subscription_id
     }

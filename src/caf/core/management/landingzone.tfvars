@@ -1,6 +1,5 @@
 landingzone = {
-  backend_type        = "azurerm"
-  level               = "level2"
+  backend_type        = "azurerm"  
   key                 = "asvm"
   global_settings_key = "management"
   tfstates = {

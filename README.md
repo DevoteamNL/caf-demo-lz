@@ -13,95 +13,74 @@ This code is based on the terraform-azurerm-caf module: https://github.com/aztfm
  - Git Client
 
 
-## The project structure
-```
-📦budget-thuis-lz
- ┣ 📂assets
- ┃ ┗ 📜architecture.jpeg
- ┣ 📂src
- ┃ ┣ 📂caf
- ┃ ┃ ┣ 📂core
- ┃ ┃ ┃ ┣ 📂connectivity
- ┃ ┃ ┃ ┃ ┣ 📜landingzone.tfvars
- ┃ ┃ ┃ ┃ ┗ 📜network_security.tfvars
- ┃ ┃ ┃ ┣ 📂identity
- ┃ ┃ ┃ ┃ ┗ 📜landingzone.tfvars
- ┃ ┃ ┃ ┗ 📂management
- ┃ ┃ ┃ ┃ ┗ 📜landingzone.tfvars
- ┃ ┃ ┣ 📂workload
- ┃ ┃ ┃ ┣ 📂nonprod
- ┃ ┃ ┃ ┃ ┗ 📜landingzone.tfvars
- ┃ ┃ ┃ ┣ 📂prod
- ┃ ┃ ┃ ┗ 📜landingzone.tfvars
- ┃ ┃ ┗ 📜global-settings.tfvars
- ┃ ┣ 📂dvt-caf
- ┃ ┃ ┣ 📂modules
- ┃ ┗ 📂dvt-caf-landingzone
- ┃ ┃ ┣ 📜connectivity_plan.ps1
- ┃ ┃ ┣ 📜landingzone.tf
- ┃ ┃ ┣ 📜local.remote.tf
- ┃ ┃ ┣ 📜locals.remote_tfstates.tf
- ┃ ┃ ┣ 📜main.tf
- ┃ ┃ ┗ 📜variables.tf
- ┣ 📜.gitignore
- ┗ 📜README.md
-```
- - 📂[module_name] - The module folder contains the terraform configuration to an specific azure resources.
- - 📂[submodule_name] - The submodule folder contains the terraform configuration to an specific "sub-resource" like an subnet is part of a virtual network.
- - 📜[module_wrapper_name].tf - The module wrapper is to improve the code reuse and organize the creation of resources from a same type. 
-
 ## Architecture
 
 ![Devoteam CAF Terraform Module](assets/architecture.jpeg)
 
 See details: [Lucid Chart](https://lucid.app/lucidchart/8214442d-934b-49cc-a34c-5924447475e0/edit?viewport_loc=-2324%2C-843%2C5450%2C2591%2C0_0&invitationId=inv_5c53211b-8739-42af-b48f-d0e178efcb95)
 
+
 ## Resources naming convention
 
 The naming convention of this project is based on the Cloud Adoption Framework for Azure - Terraform module, using the "azurecaf_name" resource, to configure a standard naming convention across the landing zones. See the documentation [here](https://github.com/aztfmod/terraform-azurerm-caf/blob/main/documentation/conventions.md). 
 
+
+## Setup the Remote State
+
+
+
+
 ## Setup the Landing Zone
 
+### Global Settings
+
+The Global Settings are used to define the naming convention and global settings to create an standard across all the landing zones.
 
 
-### The "globalsettings.tfars" file
+```terraform
 
-Global Settings. TO DO.
-
-
-### The "landingzone.tfvars" file
-
-
-This file has the settings, and the resources contained in the landing zone.
-
-``` 
-landingzone = {
-  backend_type = "azurerm"
-  key          = "connectivity"
-}
-
-environment = "production"
-
-resource_groups = {
-  hub-rg = {
-    name     = "conn-hub-rg"
-    location = "region1"
-
+global_settings = {
+  passthrough = false /* */
+  inherit_tags = false /* */
+  random_length = 0 /* The number of random characters attached to the resource name */
+  prefix = "caf" /* The prefix used to name all resources */
+  default_region = "region1" /* The Default Region Key */
+  regions = {
+    region1 = "westeurope" /* The Primary Region */
+    region2 = "northeurope" /* The Secondary Region */
   }
 }
+
+user_type = "service-principal" /* The user type used to interact to the backend */
+
 
 ```
 
 
-### Global Configuration
-
-The global_setting referenced in the Devoteam CAF Module is necessary to provide a set of standards to the landing zone resources, based on the Microsoft Cloud Adoption framework.
+### Landing Zone configuration
 
 
 
+```terraform
 
-## Getting Started
- TO DO.
+landingzone = {
+  backend_type = "azurerm"
+  key          = "connectivity"
+  environment  = "production"
+  tfstates = {
+    current = {      
+      storage_account_name = "uzexstconnctivityeoui"
+      container_name       = "tfstate"
+      resource_group_name  = "uzex-rg-caf-connectivity-syhw"
+      key                  = "caf_connectivity.tfsate"
+      tenant_id            = "[SENSITIVE]"
+      subscription_id      = "[SENSITIVE]"
+    }
+  }
+}
+
+
+```
 
 
 
