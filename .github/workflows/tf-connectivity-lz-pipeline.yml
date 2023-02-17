@@ -44,12 +44,38 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -no-color -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/core/connectivity/landingzone.tfvars" 
-      env:
-        azurerm_client_id: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_ID }}
-        azurerm_client_secret: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_SECRET }}
-        subscription_id: ${{ secrets.AZURE_LAUNCHER_SUBSCRIPTION_ID }}
-        tenant_id: ${{ secrets.AZURE_AD_TENANT_ID }}
+      run: terraform plan -no-color -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/core/connectivity/landingzone.tfvars" -out terraform.plan       
       working-directory: './src/devoteam-modules/dvt-caf-landingzones'
+      continue-on-error: true
+      
+    - name: Update Pull Request
+      uses: actions/github-script@v6
+      if: github.event_name == 'pull_request'
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+          #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+
+          <details><summary>Show Plan</summary>
+
+          \`\`\`\n
+          ${process.env.PLAN}
+          \`\`\`
+
+          </details>
+
+          *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
 
       
