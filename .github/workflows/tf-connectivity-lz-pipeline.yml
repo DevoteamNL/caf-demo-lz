@@ -19,7 +19,8 @@ jobs:
     name: 'Terraform - Connectivity Landing Zone'
     runs-on: ubuntu-latest
     environment: non production
-    
+    permissions:
+      pull-request: write
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
@@ -44,7 +45,8 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -no-color -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/core/connectivity/landingzone.tfvars" -out terraform.plan       
+      id: plan
+      run: terraform plan -no-color -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/core/connectivity/landingzone.tfvars"      
       working-directory: './src/devoteam-modules/dvt-caf-landingzones'
       continue-on-error: true
       
