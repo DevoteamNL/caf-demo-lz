@@ -29,8 +29,7 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-  alias                      = "vhub"
-  skip_provider_registration = true
+  alias                      = "vhub"  
   features {}
   subscription_id = try(var.backend.subscription_id, var.subscription_id)
   tenant_id       = try(var.backend.tenant_id, var.tenant_id)
