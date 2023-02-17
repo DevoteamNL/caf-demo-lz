@@ -12,10 +12,7 @@ env:
   ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_SECRET }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHER_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
-  TF_VAR_AZURERM_CLIENT_ID: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_ID }}
-  TF_VAR_AZURERM_CLIENT_SECRET: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_SECRET }}
-  TF_VAR_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHER_SUBSCRIPTION_ID }}
-  TF_VAR_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+  
 
 jobs:
   terraform-plan:
@@ -48,6 +45,11 @@ jobs:
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform plan -no-color -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/core/connectivity/landingzone.tfvars" 
+      env:
+        azurerm_client_id: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_ID }}
+        azurerm_client_secret: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_SECRET }}
+        subscription_id: ${{ secrets.AZURE_LAUNCHER_SUBSCRIPTION_ID }}
+        tenant_id: ${{ secrets.AZURE_AD_TENANT_ID }}
       working-directory: './src/devoteam-modules/dvt-caf-landingzones'
 
       

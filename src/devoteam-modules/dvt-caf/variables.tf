@@ -423,8 +423,6 @@ variable "azurerm_client_secret" {
   default = ""
 }
 
-
-
 variable "subscription_id" {
     default = ""  
 }
