@@ -17,14 +17,6 @@ landingzone = {
   }
 }
 
-backend = {
-  tenant_id       = "95f1c0e9-c50b-4882-87de-bb2470f0d5ad"
-  subscription_id = "c1cbea85-2d1c-4f36-a6d7-636df95de7e0"
-  client_id       = "e6c0bbdc-82d2-4fbf-9dec-35e3cd4b2e24"
-  client_secret   = "ur_8Q~g7yiq7u4iLSshsBcza8UK9loiHQzXolcxn"
-}
-
-
 resource_groups = {
   nonprod-rg = {
     name     = "app-nonprod-rg"
