@@ -27,7 +27,11 @@ The naming convention of this project is based on the Cloud Adoption Framework f
 
 ## Setup the Remote State
 
+  - Create the service principal
 
+  - Create the storage account to the remote state
+  
+  - Add the secrets values to the pipeline 
 
 
 ## Setup the Landing Zone
@@ -57,8 +61,7 @@ user_type = "service-principal" /* The user type used to interact to the backend
 ```
 
 
-### Landing Zone configuration
-
+### Configure the Landing Zones
 
 
 ```terraform
@@ -82,6 +85,20 @@ landingzone = {
 
 ```
 
+
+
+## The Terraform Pipelines
+
+![CI/CD Workflow](assets/ci_cd_workflow.jpeg)
+
+### The Continuous Deployment workflow
+
+
+
+### Plan pipeline
+
+
+### Apply pipeline
 
 
  
