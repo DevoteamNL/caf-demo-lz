@@ -17,6 +17,10 @@ jobs:
       AZURERM_CLIENT_SECRET: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_SECRET }}
       SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHER_SUBSCRIPTION_ID }}
       TENANT_ID: ${{ secrets.AZURE_AD_LAUNCHER_TENANT_ID }}
+      ARM_CLIENT_ID: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHER_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_AD_LAUNCHER_TENANT_ID }}
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
