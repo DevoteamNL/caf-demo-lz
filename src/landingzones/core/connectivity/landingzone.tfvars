@@ -4,23 +4,15 @@ landingzone = {
   environment  = "production"
   tfstates = {
     current = {      
-      storage_account_name = "uzexstconnctivityeoui"
-      container_name       = "tfstate"
-      resource_group_name  = "uzex-rg-caf-connectivity-syhw"
+      storage_account_name = "sttfstatebudgetthuis"
+      container_name       = "connectivity"
+      resource_group_name  = "caf-bt-tfstate-rg"
       key                  = "caf_connectivity.tfsate"
-      tenant_id            = "95f1c0e9-c50b-4882-87de-bb2470f0d5ad"
-      subscription_id      = "c1cbea85-2d1c-4f36-a6d7-636df95de7e0"
     }
   }
 }
 
 
-backend = {
-  tenant_id       = "95f1c0e9-c50b-4882-87de-bb2470f0d5ad"
-  subscription_id = "c1cbea85-2d1c-4f36-a6d7-636df95de7e0"
-  client_id       = "e6c0bbdc-82d2-4fbf-9dec-35e3cd4b2e24"
-  client_secret   = "ur_8Q~g7yiq7u4iLSshsBcza8UK9loiHQzXolcxn"
-}
 
 
 resource_groups = {
@@ -31,32 +23,6 @@ resource_groups = {
   }
 }
 
-storage_accounts = {
-  //Connectivity Terraform State Storage Account  
-  connectivity = {
-    name                      = "l0"
-    resource_group_key        = "hub-rg"
-    account_kind              = "BlobStorage"
-    account_tier              = "Standard"
-    shared_access_key_enabled = false
-    account_replication_type  = "GRS" //Global replication
-    blob_properties = {
-      versioning_enabled       = true
-      last_access_time_enabled = true
-      container_delete_retention_policy = {
-        days = 7
-      }
-      delete_retention_policy = {
-        days = 7
-      }
-    }
-    containers = {
-      tfstate = {
-        name = "tfstate"
-      }
-    }
-  }
-}
 
 networking = {
 
