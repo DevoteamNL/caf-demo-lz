@@ -41,7 +41,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/core/connectivity/landingzone.tfvars" 
+      run: terraform plan -no-color -var-file "./src/landingzones/global-settings.tfvars" -var-file "./src/landingzones/core/connectivity/landingzone.tfvars" 
       working-directory: './src/devoteam-modules/dvt-caf-landingzones'
 
       
