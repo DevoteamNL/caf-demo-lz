@@ -1,4 +1,4 @@
-name: 'Non Prod Landing Zone - Plan'
+name: 'Non Prod Landing Zone - Apply'
 on:
   push:      
     branchs: 
@@ -16,7 +16,7 @@ env:
 
 jobs:
   terraform-plan:
-    name: 'Terraform Plan- Non Prod Landing Zone'
+    name: 'Terraform Apply - Non Prod Landing Zone'
     runs-on: ubuntu-latest
     environment: non production      
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
