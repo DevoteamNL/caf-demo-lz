@@ -4,10 +4,8 @@ on:
     branchs: 
       - 'main'
 
-
 permissions:
-  contents: read
-  pull-requests: write
+  contents: read 
 
 env:
   ARM_CLIENT_ID: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_ID }}
