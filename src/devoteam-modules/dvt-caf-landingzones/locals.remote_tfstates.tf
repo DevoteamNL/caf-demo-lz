@@ -7,13 +7,6 @@ locals {
       client_id            = try(var.landingzone.tfstates["current"].client_id, var.backend.client_id)
       client_secret        = try(var.landingzone.tfstates["current"].client_secret, var.backend.client_secret)
     }
-    lower = {
-      storage_account_name = try(var.landingzone.tfstates["lower"].storage_account_name, null)
-      container_name       = try(var.landingzone.tfstates["lower"].container_name, null)
-      resource_group_name  = try(var.landingzone.tfstates["lower"].resource_group_name, null)
-      client_id            = try(var.landingzone.tfstates["lower"].client_id, var.backend.client_id)
-      client_secret        = try(var.landingzone.tfstates["lower"].client_secret, var.backend.client_secret)
-    }
   }
 }
 
