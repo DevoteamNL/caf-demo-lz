@@ -9,7 +9,7 @@ global_settings = {
     region1 = "westeurope"
     region2 = "northeurope"
   }
-  user_type = "sp"
+  user_type = "user"
 }
 
 

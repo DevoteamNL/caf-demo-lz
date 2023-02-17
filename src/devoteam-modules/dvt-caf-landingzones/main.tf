@@ -38,11 +38,8 @@ provider "azurerm" {
   client_secret   = try(var.backend.client_secret, var.azurerm_client_secret)
 }
 
-provider "azuread" {
-  subscription_id = try(var.backend.subscription_id, var.subscription_id)
-  tenant_id       = try(var.backend.tenant_id, var.tenant_id)
-  client_id       = try(var.backend.client_id, var.azurerm_client_id)
-  client_secret   = try(var.backend.client_secret, var.azurerm_client_secret)
+provider "azuread" {  
+  tenant_id       = try(var.backend.tenant_id, var.tenant_id)  
 }
 
 data "azurerm_client_config" "current" {}
