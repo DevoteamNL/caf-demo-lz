@@ -28,9 +28,9 @@ locals {
         storage_account_name = value.storage_account_name
         subscription_id      = try(value.subscription_id, var.subscription_id)
         tenant_id            = try(try(value.tenant_id, var.backend.tenant_id), var.tenant_id)
-        client_id            = try(try(value.client_id, var.backend.client_id),var.azurerm_client_id)
+        client_id            = try(try(value.client_id, var.backend.client_id), var.azurerm_client_id)
         client_secret        = try(try(value.client_secret, var.backend.client_secret), var.azurerm_client_secret)
-        
+
       }
     }
   }
@@ -42,7 +42,7 @@ locals {
     try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.objects[var.landingzone.global_settings_key].global_settings, null),
     try(data.terraform_remote_state.remote[var.landingzone.global_settings_key].outputs.global_settings, null),
     try(data.terraform_remote_state.remote[keys(var.landingzone.tfstates)[0]].outputs.global_settings, null)
-  ) 
-  
+  )
+
 
 }

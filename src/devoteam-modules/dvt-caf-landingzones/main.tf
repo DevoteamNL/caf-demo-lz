@@ -24,7 +24,7 @@ terraform {
   required_version = ">= 0.15"
 }
 
-provider "azurerm" {  
+provider "azurerm" {
   features {}
   subscription_id = try(var.backend.subscription_id, var.subscription_id)
   tenant_id       = try(var.backend.tenant_id, var.tenant_id)
@@ -33,7 +33,7 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-  alias                      = "vhub"  
+  alias = "vhub"
   features {}
   subscription_id = try(var.backend.subscription_id, var.subscription_id)
   tenant_id       = try(var.backend.tenant_id, var.tenant_id)
@@ -41,14 +41,14 @@ provider "azurerm" {
   client_secret   = try(var.backend.client_secret, var.azurerm_client_secret)
 }
 
-provider "azuread" { 
-  tenant_id       = try(var.backend.tenant_id, var.tenant_id) 
+provider "azuread" {
+  tenant_id = try(var.backend.tenant_id, var.tenant_id)
 }
 
 data "azurerm_client_config" "current" {}
 
 
-locals {  
+locals {
   # Update the tfstates map
   tfstates = merge(
     tomap(
@@ -62,14 +62,14 @@ locals {
 
 
   backend = {
-     azurerm = {
+    azurerm = {
       storage_account_name = var.landingzone.tfstates["current"].storage_account_name
       container_name       = var.landingzone.tfstates["current"].container_name
       resource_group_name  = var.landingzone.tfstates["current"].resource_group_name
-      key                  = var.landingzone.tfstates["current"].key      
+      key                  = var.landingzone.tfstates["current"].key
       tenant_id            = try(var.landingzone.tfstates["current"].tenant_id, var.tenant_id)
       subscription_id      = try(var.landingzone.tfstates["current"].subscription_id, var.subscription_id)
-      
+
     }
   }
 

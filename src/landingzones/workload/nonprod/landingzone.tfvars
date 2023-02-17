@@ -3,24 +3,16 @@ landingzone = {
   key = "nonprod"
   tfstates = {
     current = {
-      storage_account_name = "uzexstnonprodaqcu"
-      container_name       = "tfstate"
-      resource_group_name  = "uzex-rg-caf-nonpror-dhvk"
-      key                  = "caf_nonprod.tfsate"
-      tenant_id            = "95f1c0e9-c50b-4882-87de-bb2470f0d5ad"
-      subscription_id      = "c1cbea85-2d1c-4f36-a6d7-636df95de7e0"
-      client_id       = "e6c0bbdc-82d2-4fbf-9dec-35e3cd4b2e24"
-      client_secret   = "ur_8Q~g7yiq7u4iLSshsBcza8UK9loiHQzXolcxn"      
+      storage_account_name = "sttfstatebudgetthuis"
+      container_name       = "nonprod"
+      resource_group_name  = "caf-bt-tfstate-rg"
+      key                  = "caf_nonprod.tfsate"    
     }
     connectivity = {
-      storage_account_name = "uzexstconnctivityeoui"
-      container_name       = "tfstate"
-      resource_group_name  = "uzex-rg-caf-connectivity-syhw"
+      storage_account_name = "sttfstatebudgetthuis"
+      container_name       = "connectivity"
+      resource_group_name  = "caf-bt-tfstate-rg"
       key                  = "caf_connectivity.tfsate"
-      tenant_id            = "95f1c0e9-c50b-4882-87de-bb2470f0d5ad"
-      subscription_id      = "c1cbea85-2d1c-4f36-a6d7-636df95de7e0"
-      client_id       = "e6c0bbdc-82d2-4fbf-9dec-35e3cd4b2e24"
-      client_secret   = "ur_8Q~g7yiq7u4iLSshsBcza8UK9loiHQzXolcxn"      
     }
   }
 }
