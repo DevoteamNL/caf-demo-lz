@@ -42,7 +42,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -input=false -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/remote/launch_remote.tfvars"
+      run: terraform plan --var-file "../../landingzones/global-settings.tfvars" --var-file "../../landingzones/remote/launch_remote.tfvars"
       working-directory: './src/devoteam-modules/dvt-caf-remote-setup'
 
       
