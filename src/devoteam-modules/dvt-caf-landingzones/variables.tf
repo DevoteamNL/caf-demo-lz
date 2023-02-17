@@ -20,7 +20,7 @@ variable "subscription_id" {
 }
 variable "resource_groups" {}
 variable "subscriptions" {
-    default = {}
+  default = {}
 }
 
 variable "global_settings" {}
@@ -28,17 +28,17 @@ variable "global_settings" {}
 
 
 variable "storage_accounts" {
-    default = {}
+  default = {}
 }
 
 
 variable "networking" {
-    default = {}
+  default = {}
 }
 
 
 variable "compute" {
-    default = {}
+  default = {}
 }
 
 

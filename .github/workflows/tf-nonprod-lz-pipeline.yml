@@ -2,7 +2,7 @@ name: 'Non Prod Landing Zone - Plan'
 on:      
   pull_request:
     paths:
-      - src/landingzones/workload/nonprod
+      - '**/landingzones/workload/nonprod/*.tfvars'
 
 
 permissions:
