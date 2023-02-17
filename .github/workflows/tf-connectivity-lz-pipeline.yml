@@ -1,7 +1,5 @@
-name: 'Connectivity Landing Zone'
-on:
-  push:    
-    branches: ['main']      
+name: 'Connectivity Landing Zone - Plan'
+on:      
   pull_request:
 
 permissions:
@@ -16,7 +14,7 @@ env:
 
 jobs:
   terraform-plan:
-    name: 'Terraform - Connectivity Landing Zone'
+    name: 'Terraform Plan- Connectivity Landing Zone'
     runs-on: ubuntu-latest
     environment: non production
     permissions:
