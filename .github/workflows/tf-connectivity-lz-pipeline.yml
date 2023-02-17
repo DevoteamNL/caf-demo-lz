@@ -1,23 +1,25 @@
-name: 'Terraform'
-
+name: 'Connectivity Landing Zone'
 on:
-  push:
-    branches: [ "main" ]
+  push:    
+    paths:
+      - src/landingzones/core/connectivity
   pull_request:
+    paths:
+      - src/landingzones/core/connectivity
 
 permissions:
   contents: read
 
 jobs:
   terraform-plan:
-    name: 'Launcher Terraform'
+    name: 'Terraform - Connectivity Landing Zone'
     runs-on: ubuntu-latest
     environment: non production
     env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHER_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_AD_LAUNCHER_TENANT_ID }}
+      AZURERM_CLIENT_ID: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_ID }}
+      AZURERM_CLIENT_SECRET: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_SECRET }}
+      SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHER_SUBSCRIPTION_ID }}
+      TENANT_ID: ${{ secrets.AZURE_AD_LAUNCHER_TENANT_ID }}
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
@@ -37,12 +39,12 @@ jobs:
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init
-      working-directory: './src/devoteam-modules/dvt-caf-remote-setup'
+      working-directory: './src/devoteam-modules/dvt-caf-landingzones'
   
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -input=false -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/remote/launch_remote.tfvars"
-      working-directory: './src/devoteam-modules/dvt-caf-remote-setup'
+      run: terraform plan -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/core/connectivity/landingzone.tfvars" 
+      working-directory: './src/devoteam-modules/dvt-caf-landingzones'
 
       

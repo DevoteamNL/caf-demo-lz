@@ -22,11 +22,17 @@ terraform {
       version = "~> 1.2.0"
     }
   }
+  backend "azurerm" {
+        resource_group_name  = var.tfstate_resource_group_name
+        storage_account_name = var.tfstate_storage_account_name
+        container_name       = var.tfstate_container_name
+        key                  = var.tfstate_key
+    }
 }
 
 
 provider "azurerm" {  
-  features {}
+  features {}  
 }
 
 locals { 

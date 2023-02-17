@@ -26,10 +26,10 @@ locals {
         key                  = value.key
         resource_group_name  = value.resource_group_name
         storage_account_name = value.storage_account_name
-        subscription_id      = value.subscription_id
-        tenant_id            = try(value.tenant_id, var.backend.tenant_id)
-        client_id            = try(value.client_id, var.backend.client_id)
-        client_secret        = try(value.client_secret, var.backend.client_secret)
+        subscription_id      = try(value.subscription_id, var.subscription_id)
+        tenant_id            = try(try(value.tenant_id, var.backend.tenant_id), var.tenant_id)
+        client_id            = try(try(value.client_id, var.backend.client_id),var.azurerm_client_id)
+        client_secret        = try(try(value.client_secret, var.backend.client_secret), var.azurerm_client_secret)
         
       }
     }

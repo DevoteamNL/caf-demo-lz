@@ -32,10 +32,10 @@ provider "azurerm" {
   alias                      = "vhub"
   skip_provider_registration = true
   features {}
-  subscription_id = var.backend.subscription_id
-  tenant_id       = var.backend.tenant_id
-  client_id       = var.backend.client_id
-  client_secret   = var.backend.client_secret
+  subscription_id = try(var.backend.subscription_id, var.subscription_id)
+  tenant_id       = try(var.backend.tenant_id, var.tenant_id)
+  client_id       = try(var.backend.client_id, var.azurerm_client_id)
+  client_secret   = try(var.backend.client_secret, var.azurerm_client_secret)
 }
 
 data "azurerm_client_config" "current" {}
@@ -60,8 +60,8 @@ locals {
       container_name       = var.landingzone.tfstates["current"].container_name
       resource_group_name  = var.landingzone.tfstates["current"].resource_group_name
       key                  = var.landingzone.tfstates["current"].key      
-      tenant_id            = var.landingzone.tfstates["current"].tenant_id
-      subscription_id      = var.landingzone.tfstates["current"].subscription_id
+      tenant_id            = try(var.landingzone.tfstates["current"].tenant_id, var.tenant_id)
+      subscription_id      = try(var.landingzone.tfstates["current"].subscription_id, var.subscription_id)
       
     }
   }
