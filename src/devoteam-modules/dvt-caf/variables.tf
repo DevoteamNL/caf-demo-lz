@@ -414,3 +414,16 @@ variable "resource_provider_registration" {
 variable "azurerm_client_config" {
     default = {}
 }
+
+variable "azurerm_client_id" {
+  default = null
+}
+
+variable "azurerm_client_secret" {
+  default = null
+}
+
+
+variable "subscription_id" {
+    default = null  
+}
