@@ -1,8 +1,8 @@
 name: 'Non Prod Landing Zone - Apply'
 on:
   push:      
-    branchs: 
-      - 'main'
+    paths:
+      - '**/landingzones/workload/nonprod/*.tfvars'
 
 permissions:
   contents: read 
