@@ -26,7 +26,7 @@ terraform {
 
 
 provider "azurerm" {  
-  features {}
+  features {}  
 }
 
 locals { 
