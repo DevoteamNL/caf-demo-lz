@@ -12,9 +12,6 @@ landingzone = {
   }
 }
 
-
-
-
 resource_groups = {
   hub-rg = {
     name     = "conn-hub-rg"
@@ -23,9 +20,7 @@ resource_groups = {
   }
 }
 
-
 networking = {
-
 
   #**************************************************************#
   #VIRTUAL NETWORK***********************************************#
