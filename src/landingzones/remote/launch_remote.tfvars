@@ -1,10 +1,3 @@
-
-
-tenant_id             = "95f1c0e9-c50b-4882-87de-bb2470f0d5ad"
-subscription_id       = "c1cbea85-2d1c-4f36-a6d7-636df95de7e0"
-azurerm_client_id     = "e6c0bbdc-82d2-4fbf-9dec-35e3cd4b2e24"
-azurerm_client_secret = "ur_8Q~g7yiq7u4iLSshsBcza8UK9loiHQzXolcxn"
-
 launcher = {
   key          = "caf_launcher"
   backend_type = "azurerm"
@@ -30,7 +23,7 @@ resource_groups = {
 
 storage_accounts = {
   connectivity = {
-    name                      = "connctivity"
+    name                      = "connectivity"
     resource_group_key        = "rg-connectivity"
     account_kind              = "BlobStorage"
     account_tier              = "Standard"
