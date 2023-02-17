@@ -1,11 +1,8 @@
 name: 'Connectivity Landing Zone'
 on:
   push:    
-    paths:
-      - src/landingzones/core/connectivity
+    branches: ['main']      
   pull_request:
-    paths:
-      - src/landingzones/core/connectivity
 
 permissions:
   contents: read
