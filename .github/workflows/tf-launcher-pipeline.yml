@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: non production
     env:
-      TF_VAR_AZURERM_CLIENT_ID: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_ID }}
-      TF_VAR_AZURERM_CLIENT_SECRET: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_SECRET }}
-      TF_VAR_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHER_SUBSCRIPTION_ID }}
-      TF_VAR_TENANT_ID: ${{ secrets.AZURE_AD_LAUNCHER_TENANT_ID }}
+      AZURERM_CLIENT_ID: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_ID }}
+      AZURERM_CLIENT_SECRET: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_SECRET }}
+      SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHER_SUBSCRIPTION_ID }}
+      TENANT_ID: ${{ secrets.AZURE_AD_LAUNCHER_TENANT_ID }}
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
