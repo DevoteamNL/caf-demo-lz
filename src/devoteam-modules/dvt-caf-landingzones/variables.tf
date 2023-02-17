@@ -1,5 +1,7 @@
 variable "landingzone" {}
-variable "backend" {}
+variable "backend" {
+  default = {}
+}
 
 variable "azurerm_client_id" {
   default = null
@@ -14,7 +16,7 @@ variable "tenant_id" {
 }
 
 variable "subscription_id" {
-    default = null  
+  default = null
 }
 variable "resource_groups" {}
 variable "subscriptions" {
