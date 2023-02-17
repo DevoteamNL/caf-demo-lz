@@ -4,8 +4,8 @@ locals {
       storage_account_name = var.landingzone.tfstates["current"].storage_account_name
       container_name       = var.landingzone.tfstates["current"].container_name
       resource_group_name  = var.landingzone.tfstates["current"].resource_group_name
-      client_id            = var.landingzone.tfstates["current"].client_id
-      client_secret        = var.landingzone.tfstates["current"].client_secret
+      client_id            = try(var.landingzone.tfstates["current"].client_id, var.backend.client_id)
+      client_secret        = try(var.landingzone.tfstates["current"].client_secret, var.backend.client_secret)
     }
   }
 }
@@ -27,9 +27,9 @@ locals {
         resource_group_name  = value.resource_group_name
         storage_account_name = value.storage_account_name
         subscription_id      = value.subscription_id
-        tenant_id            = value.tenant_id
-        client_id            = value.client_id
-        client_secret        = value.client_secret
+        tenant_id            = try(value.tenant_id, var.backend.tenant_id)
+        client_id            = try(value.client_id, var.backend.client_id)
+        client_secret        = try(value.client_secret, var.backend.client_secret)
         
       }
     }
