@@ -2,7 +2,7 @@ name: 'Connectivity Landing Zone - Plan'
 on:
   pull_request:
     paths:
-      - src/landingzones/core/connectivity
+      - '**/landingzones/core/connectivity/*.tfvars'
 
 permissions:
   contents: read
