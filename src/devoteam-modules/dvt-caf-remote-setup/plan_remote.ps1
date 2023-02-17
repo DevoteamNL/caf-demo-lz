@@ -1,2 +1,4 @@
 terraform init --upgrade
-terraform plan -var-file "../../landingzones/remote/global.tfvars" -var-file "../../landingzones/remote/storage.tfvars"
+terraform validate 
+terraform plan -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/remote/launch_remote.tfvars"
+#terraform apply -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/remote/launch_remote.tfvars"

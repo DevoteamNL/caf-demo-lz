@@ -384,8 +384,8 @@ locals {
   }
 
   enable = {
-    bastion_hosts    = try(var.enable.bastion_hosts, true)
-    virtual_machines = try(var.enable.virtual_machines, true)
+    bastion_hosts    = try(var.enable.bastion_hosts, false)
+    virtual_machines = try(var.enable.virtual_machines, false)
   }
 
   identity = {

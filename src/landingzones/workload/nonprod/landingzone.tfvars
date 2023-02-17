@@ -12,7 +12,7 @@ landingzone = {
       client_id       = "e6c0bbdc-82d2-4fbf-9dec-35e3cd4b2e24"
       client_secret   = "ur_8Q~g7yiq7u4iLSshsBcza8UK9loiHQzXolcxn"      
     }
-    lower = {
+    connectivity = {
       storage_account_name = "uzexstconnctivityeoui"
       container_name       = "tfstate"
       resource_group_name  = "uzex-rg-caf-connectivity-syhw"
@@ -24,18 +24,6 @@ landingzone = {
     }
   }
 }
-
-
-remote_state = {
-  storage_account_name = "lzremotestate"
-  container_name       = "landingzones"
-  resource_group_name  = "caf-remote-states"
-  tfstate_key          = "nonprod"
-  tenant_id            = "95f1c0e9-c50b-4882-87de-bb2470f0d5ad"
-  subscription_id      = "c1cbea85-2d1c-4f36-a6d7-636df95de7e0"
-
-}
-
 
 backend = {
   tenant_id       = "95f1c0e9-c50b-4882-87de-bb2470f0d5ad"
