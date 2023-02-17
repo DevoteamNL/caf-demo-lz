@@ -4,6 +4,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 env:
   ARM_CLIENT_ID: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_ID }}
@@ -16,9 +17,7 @@ jobs:
   terraform-plan:
     name: 'Terraform Plan- Connectivity Landing Zone'
     runs-on: ubuntu-latest
-    environment: non production
-    permissions:
-      pull-requests: write
+    environment: non production      
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
