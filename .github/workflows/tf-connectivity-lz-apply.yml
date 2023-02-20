@@ -2,7 +2,7 @@ name: 'Connectivity Landing Zone - Apply'
 on:
   push:      
     paths:
-      - '**/landingzones/workload/nonprod/*.tfvars'
+      - '**/landingzones/core/connectivity/*.tfvars'
 
 permissions:
   contents: read
