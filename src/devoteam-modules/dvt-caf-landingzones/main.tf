@@ -24,7 +24,7 @@ terraform {
   required_version = ">= 0.15"
 
   backend "azurerm" {
-    
+
   }
 }
 
@@ -34,17 +34,17 @@ provider "azurerm" {
   tenant_id       = try(var.backend.tenant_id, var.tenant_id)
   client_id       = try(var.backend.client_id, var.azurerm_client_id)
   client_secret   = try(var.backend.client_secret, var.azurerm_client_secret)
-  
+
 }
 
 provider "azurerm" {
-  alias = "vhub"
+  alias                      = "vhub"
   skip_provider_registration = true
   features {}
   subscription_id = try(var.backend.subscription_id, var.subscription_id)
   tenant_id       = try(var.backend.tenant_id, var.tenant_id)
   client_id       = try(var.backend.client_id, var.azurerm_client_id)
-  client_secret   = try(var.backend.client_secret, var.azurerm_client_secret) 
+  client_secret   = try(var.backend.client_secret, var.azurerm_client_secret)
 }
 
 provider "azuread" {
@@ -74,7 +74,7 @@ locals {
       resource_group_name  = var.landingzone.tfstates["current"].resource_group_name
       key                  = var.landingzone.tfstates["current"].tfstate
       tenant_id            = try(var.landingzone.tfstates["current"].tenant_id, var.tenant_id)
-      subscription_id      = try(var.landingzone.tfstates["current"].subscription_id, var.subscription_id)      
+      subscription_id      = try(var.landingzone.tfstates["current"].subscription_id, var.subscription_id)
     }
   }
 

@@ -6,7 +6,7 @@ locals {
       resource_group_name  = var.landingzone.tfstates["current"].resource_group_name
       client_id            = try(var.landingzone.tfstates["current"].client_id, try(var.backend.client_id, var.azurerm_client_id))
       client_secret        = try(var.landingzone.tfstates["current"].client_secret, try(var.backend.client_secret, var.azurerm_client_secret))
-    }         
+    }
   }
 }
 
@@ -20,7 +20,6 @@ data "terraform_remote_state" "remote" {
 
 
 locals {
-
   remote_state = {
     azurerm = {
       for key, value in try(var.landingzone.tfstates, {}) : key => {
