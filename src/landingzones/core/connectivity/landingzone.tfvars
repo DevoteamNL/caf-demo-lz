@@ -56,7 +56,7 @@ networking = {
         }
         jumpbox = {
           name    = "nonprod"
-          cidr    = ["100.64.103.0/27"]
+          cidr    = ["100.64.103.0/27"] 
           nsg_key = "lznonprod"
         }
         private_endpoints = {
