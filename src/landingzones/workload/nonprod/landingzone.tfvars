@@ -16,7 +16,7 @@ landingzone = {
     }
   }
 }
-
+  
 resource_groups = {
   nonprod-rg = {
     name     = "app-nonprod-rg"

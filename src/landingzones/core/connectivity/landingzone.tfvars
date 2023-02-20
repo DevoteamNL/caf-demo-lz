@@ -11,7 +11,7 @@ landingzone = {
     }
   }
 }
-
+  
 
 resource_groups = {
   hub-rg = {
