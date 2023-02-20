@@ -54,7 +54,7 @@ networking = {
           cidr    = ["100.64.102.0/27"]
           nsg_key = "jumpbox"
         }
-        jumpbox = {
+        nonprod = {
           name    = "nonprod"
           cidr    = ["100.64.103.0/27"] 
           nsg_key = "lznonprod"
