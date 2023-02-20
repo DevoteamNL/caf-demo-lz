@@ -10,8 +10,7 @@ landingzone = {
       key                  = "caf_connectivity.tfsate"
     }
   }
-}
-  
+}  
 
 resource_groups = {
   hub-rg = {
