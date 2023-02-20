@@ -19,4 +19,6 @@ module "landingzone" {
   tfstates                = var.landingzone.tfstates
   database                = var.database
   remote_objects          = local.remote
+  keyvaults               = var.keyvaults
+  managed_identities      = var.managed_identities
 }
