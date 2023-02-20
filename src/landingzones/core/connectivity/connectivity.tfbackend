@@ -1,0 +1,4 @@
+storage_account_name = "sttfstatebudgetthuis"
+container_name       = "connectivity"
+resource_group_name  = "caf-bt-tfstate-rg"
+key               = "caf_connectivity.tfsate"  

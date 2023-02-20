@@ -45,3 +45,20 @@ variable "compute" {
 variable "tags" {
   default = {}
 }
+
+
+variable "database" {
+  default = {}  
+}
+
+
+
+variable "lower_storage_account_name" {
+  default = null
+}
+variable "lower_container_name" {
+  default = null
+}
+variable "lower_resource_group_name" {
+  default = null
+}

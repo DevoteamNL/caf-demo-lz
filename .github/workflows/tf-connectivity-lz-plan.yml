@@ -43,12 +43,7 @@ jobs:
 
     - name: Terraform Init
       id: init
-      run: terraform init
-      working-directory: './src/devoteam-modules/dvt-caf-landingzones'
-
-    - name: Terraform Validate
-      id: validate
-      run: terraform init
+      run: terraform init -backend-config "../../landingzones/core/connectivity/connectivity.tfbackend" 
       working-directory: './src/devoteam-modules/dvt-caf-landingzones'
 
     # Generates an execution plan for Terraform

@@ -17,5 +17,6 @@ module "landingzone" {
   networking              = var.networking
   compute                 = var.compute
   tfstates                = var.landingzone.tfstates
-
+  database                = var.database  
+  remote_objects          =   local.remote
 }
