@@ -41,7 +41,7 @@ The naming convention of this project is based on the Cloud Adoption Framework f
 The Global Settings are used to define the naming convention and global settings to create an standard across all the landing zones.
 
 
-```terraform
+```hcl
 
 global_settings = {
   passthrough = false /* */
@@ -64,7 +64,7 @@ user_type = "service-principal" /* The user type used to interact to the backend
 ### Configure the Landing Zones
 
 
-```terraform
+```hcl
 
 landingzone = {
   backend_type = "azurerm"
@@ -76,8 +76,8 @@ landingzone = {
       container_name       = "tfstate"
       resource_group_name  = "uzex-rg-caf-connectivity-syhw"
       key                  = "caf_connectivity.tfsate"
-      tenant_id            = "[SENSITIVE]"
-      subscription_id      = "[SENSITIVE]"
+      tenant_id            = "[SENSITIVE]" /* OPTIONAL - If is null the environment variable will be used*/
+      subscription_id      = "[SENSITIVE]" /* OPTIONAL - If is null the environment variable will be used */
     }
   }
 }
@@ -93,13 +93,57 @@ landingzone = {
 
 ### The Continuous Deployment workflow
 
+### Environment variables
+
+```yaml
+env:
+  ARM_CLIENT_ID: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHER_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+
+```
 
 
 ### Plan pipeline
 
+The Plan pipeline will run after the Pull Request to the master branch. The pipeline should be triggered when the landing zone path has any update. 
+
+```yaml
+name: 'Connectivity Landing Zone - Plan'
+on:
+  pull_request:
+    paths:
+      - '**/landingzones/core/connectivity/*.tfvars'
+
+
+```
+
+After the plan, the pipeline will update the Pull Request with the output of the Terraform steps, to do the update the pipelie must have write permission to add a comment to the pull request.
+
+```yaml
+permissions:
+  contents: read
+  pull-requests: write
+
+```
+
+The comment result is:
+
+![Pull Request Comment](assets/../assets/pr-actions-comment.png)
+
 
 ### Apply pipeline
 
+
+```yaml
+name: 'Connectivity Landing Zone - Apply'
+on:
+  push:      
+    paths:
+      - '**/landingzones/workload/nonprod/*.tfvars'
+
+```
 
  
 
