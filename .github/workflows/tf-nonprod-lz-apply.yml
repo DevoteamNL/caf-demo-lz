@@ -35,6 +35,11 @@ jobs:
       with:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
     
+    - name: Terraform Init
+      id: init      
+      run: terraform init -upgrade 
+      working-directory: './src/devoteam-modules/dvt-caf-landingzones'
+      continue-on-error: true   
 
     # Apply infrastructure changes
     - name: Terraform Apply
