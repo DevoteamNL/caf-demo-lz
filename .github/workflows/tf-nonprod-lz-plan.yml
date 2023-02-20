@@ -38,14 +38,14 @@ jobs:
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       id: init
-      run: terraform init -backend-config "../../landingzones/core/connectivity/connectivity.tfbackend" 
+      run: terraform init -backend-config "../../landingzones/workload/nonprod/nonprod.tfbackend" 
       working-directory: './src/devoteam-modules/dvt-caf-landingzones'
     
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       id: plan
-      run: terraform plan -no-color -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/workload/nonprod/landingzone.tfvars"      
+      run: terraform plan -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/workload/nonprod/landingzone.tfvars"  -var-file "../../landingzones/workload/nonprod/azuread.tfvars" -var-file "../../landingzones/workload/nonprod/security.tfvars" -var-file "../../landingzones/workload/nonprod/networking.tfvars"  -var-file "../../landingzones/workload/nonprod/database.tfvars" 
       working-directory: './src/devoteam-modules/dvt-caf-landingzones'
       continue-on-error: true
       
