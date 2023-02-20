@@ -40,7 +40,7 @@ jobs:
       id: fmt
       run: terraform fmt -check
       working-directory: './src/devoteam-modules/dvt-caf-landingzones'
-      
+
     - name: Terraform Init
       id: init
       run: terraform init -backend-config "../../landingzones/workload/nonprod/nonprod.tfbackend" 
@@ -50,7 +50,7 @@ jobs:
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       id: plan
-      run: terraform plan -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/workload/nonprod/landingzone.tfvars"  -var-file "../../landingzones/workload/nonprod/azuread.tfvars" -var-file "../../landingzones/workload/nonprod/security.tfvars" -var-file "../../landingzones/workload/nonprod/networking.tfvars"  -var-file "../../landingzones/workload/nonprod/database.tfvars" 
+      run: terraform plan -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/workload/nonprod/landingzone.tfvars"  
       working-directory: './src/devoteam-modules/dvt-caf-landingzones'
       continue-on-error: true
       

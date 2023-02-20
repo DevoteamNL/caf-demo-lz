@@ -44,7 +44,7 @@ jobs:
     - name: Terraform Apply
       id: apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/workload/nonprod/landingzone.tfvars"  -var-file "../../landingzones/workload/nonprod/azuread.tfvars" -var-file "../../landingzones/workload/nonprod/security.tfvars" -var-file "../../landingzones/workload/nonprod/networking.tfvars"  -var-file "../../landingzones/workload/nonprod/database.tfvars"  -auto-approve 
+      run: terraform apply -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/workload/nonprod/landingzone.tfvars" -auto-approve 
       working-directory: './src/devoteam-modules/dvt-caf-landingzones'
       continue-on-error: true
       

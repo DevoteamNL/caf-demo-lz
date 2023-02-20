@@ -24,6 +24,159 @@ resource_groups = {
   }
 }
 
+azuread_groups = {
+  sqlserver_admin = {
+    name        = "caf-sqlserver-admins"
+    description = "Administrators of the sales SQL server."
+    members = {
+      user_principal_names = []
+      group_keys             = []
+      service_principal_keys = []
+    }
+    owners = {
+      user_principal_names = []
+      service_principal_keys = []
+      object_ids             = []
+    }
+    prevent_duplicate_name = false
+  }
+}
+
+azuread_roles = {
+  mssql_servers = {
+    mssqlserver1 = {
+      roles = ["Directory Readers"]
+    }
+  }
+}
+
+managed_identities = {
+  webapp_mi = {
+    name               = "example_db_mi"
+    resource_group_key = "nonprod-rg"
+  }
+}
+
+
+
+keyvaults = {
+  kv1 = {
+    name               = "nonprodkv"
+    resource_group_key = "nonprod-rg"
+    sku_name           = "standard"
+    creation_policies = {
+      logged_in_user = {
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
+      }
+    }
+  }
+}
+
+
+database = {
+  mssql_servers = {
+    mssqlserver1 = {
+      name                          = "nonprod-mssqlserver"
+      region                        = "region1"
+      resource_group_key            = "nonprod-rg"
+      version                       = "12.0"
+      administrator_login           = "sqluseradmin"
+      keyvault_key                  = "kv1"
+      connection_policy             = "Default"
+      public_network_access_enabled = true
+      identity = {
+        type = "SystemAssigned"
+      }
+    }
+  }
+
+  mssql_databases = {
+    mssql_db1 = {
+      name               = "exampledb1"
+      resource_group_key = "nonprod-rg"
+      mssql_server_key   = "mssqlserver1"
+      license_type       = "LicenseIncluded"
+      max_size_gb        = 4
+      sku_name           = "BC_Gen5_2"
+
+      db_permissions = {
+        group1 = {
+          db_roles = ["db_owner", "db_accessadmin"]
+          managed_identities = {
+            nonprod = {
+              managed_identity_keys = ["webapp_mi"]
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+networking = {
+  vnets = {
+    // AKS SPOKE VNET
+    spoke_re1 = {
+      resource_group_key = "nonprod-rg"
+      region             = "region1"
+      vnet = {
+        name          = "aks"
+        address_space = ["100.64.48.0/22"]
+      }
+      specialsubnets = {}
+      subnets = {
+        aks_nodepool_system = {
+          name    = "aks_nodepool_system"
+          cidr    = ["100.64.48.0/24"]
+          nsg_key = "azure_kubernetes_cluster_nsg"
+        }
+        private_endpoints = {
+          name                                           = "private_endpoints"
+          cidr                                           = ["100.64.51.0/27"]
+          enforce_private_link_endpoint_network_policies = true
+        }
+        jumpbox = {
+          name    = "jumpbox"
+          cidr    = ["100.64.51.128/27"]
+          nsg_key = "azure_bastion_nsg"
+        }
+      }
+    }
+  }
+   vnet_peerings = {
+    hub-re1_TO_spoke-re1 = {
+      name = "hub-re1_TO_spoke-re1"
+      from = {
+        lz_key = "connectivity" 
+        output_key = "vnets"
+        vnet_key   = "hub_re1"
+      }
+      to = {
+        vnet_key = "spoke_re1"
+      }
+      allow_virtual_network_access = true
+      allow_forwarded_traffic      = true
+      allow_gateway_transit        = false
+      use_remote_gateways          = false
+    }
+    spoke-re1_TO_hub-re1 = {
+      name = "hub_re2_TO_hub_re1"
+      from = {
+        vnet_key = "spoke_re1"
+      }
+      to = {
+        lz_key = "connectivity" 
+        output_key = "vnets"
+        vnet_key   = "hub_re1"
+      }
+      allow_virtual_network_access = true
+      allow_forwarded_traffic      = false
+      allow_gateway_transit        = false
+      use_remote_gateways          = false
+    }
+  }
+} 
+
 
 compute = { 
   azure_container_registries = {
