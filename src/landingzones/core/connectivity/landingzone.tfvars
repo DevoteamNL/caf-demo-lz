@@ -43,12 +43,7 @@ networking = {
           cidr = ["100.64.101.0/26"]
         }
       }
-      subnets = {
-        AzureBastionSubnet = {
-          name    = "AzureBastionSubnet" #Must be called AzureBastionSubnet
-          cidr    = ["100.64.101.64/26"]
-          nsg_key = "azure_bastion_nsg"
-        }
+      subnets = {       
         jumpbox = {
           name    = "jumpbox"
           cidr    = ["100.64.102.0/27"]
