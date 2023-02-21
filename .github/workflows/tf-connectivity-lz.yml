@@ -7,7 +7,7 @@ on:
       - '**/landingzones/core/connectivity/*.*' 
   pull_request:
     paths:
-      - '**/landingzones/core/connectivity/*.tfvars' 
+      - '**/landingzones/core/connectivity/*.*' 
 
 permissions:
   contents: read

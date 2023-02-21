@@ -32,6 +32,8 @@ The naming convention of this project is based on the Cloud Adoption Framework f
   - Create the storage account to the remote state
   
   - Add the secrets values to the pipeline 
+  
+  - Configure the Landing Zones .tfbackend files with the remote state backend configuration
 
 
 ## Setup the Landing Zone
@@ -105,47 +107,111 @@ env:
 ```
 
 
-### Plan pipeline
+### Pipeline
 
-The Plan pipeline will run after the Pull Request to the main branch. The pipeline should be triggered when the landing zone path has any update. 
+The Terraform pipeline will plan and apply the infrastruture using CI/CD principles, the code of the Connectivity Landing Zone Pipeline demo is
 
-```yaml
-name: 'Connectivity Landing Zone - Plan'
+```yaml 
+
+name: 'Connectivity Landing Zone'
 on:
+  push:      
+    branches:
+      - main
+    paths:
+      - '**/landingzones/core/connectivity/*.*' 
   pull_request:
     paths:
-      - '**/landingzones/core/connectivity/*.tfvars'
+      - '**/landingzones/core/connectivity/*.*' 
 
-
-```
-
-After the plan, the pipeline will update the Pull Request with the output of the Terraform steps, to do the update the pipelie must have write permission to add a comment to the pull request.
-
-```yaml
 permissions:
   contents: read
   pull-requests: write
 
+env:
+  ARM_CLIENT_ID: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHER_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}  
+
+jobs:
+  terraform:
+    name: 'Terraform - Connectivity Landing Zone'
+    runs-on: ubuntu-latest
+    environment: non production      
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # Check the code format
+    - name: Terraform Format
+      id: fmt
+      run: terraform fmt -check
+      working-directory: './src/devoteam-modules/dvt-caf-landingzones'
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      id: init
+      run: terraform init -backend-config "../../landingzones/core/connectivity/connectivity.tfbackend" 
+      working-directory: './src/devoteam-modules/dvt-caf-landingzones'
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/core/connectivity/landingzone.tfvars" -var-file "../../landingzones/core/connectivity/network_security.tfvars"  
+      working-directory: './src/devoteam-modules/dvt-caf-landingzones'
+      continue-on-error: true
+      
+      # This step will get the plan output and add a comment on the Pull Request, the reviewer woll can take a look on the changes and aprove the PR
+    - name: Update Pull Request
+      uses: actions/github-script@v6
+      if: github.event_name == 'pull_request'
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = `#### Terraform Format and Style  - \`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization - \`${{ steps.init.outcome }}\`
+          #### Terraform Plan - \`${{ steps.plan.outcome }}\`          
+
+          <details><summary>Show Plan</summary>
+
+          \`\`\`\n
+          ${process.env.PLAN}
+          \`\`\`
+
+          </details>
+
+          *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
+
+    # When the Pipeline is executed after a push on main branch, the apply will be auto approved and the infrastructure will be provisioned
+    - name: Terraform Apply
+      id: apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/core/connectivity/landingzone.tfvars" -var-file "../../landingzones/core/connectivity/network_security.tfvars" -auto-approve      
+      working-directory: './src/devoteam-modules/dvt-caf-landingzones'      
+
 ```
-
-The comment result is:
-
-![Pull Request Comment](assets/../assets/pr-actions-comment.png)
-
-
-### Apply pipeline
-
-The apply pipeline will run when the pull request is approved and merged, and will apply the changes. This sample is to trigger the pipeline when the tfvars files on this specific path are changed.
-
-```yaml
-name: 'Connectivity Landing Zone - Apply'
-on:
-  push:      
-    paths:
-      - '**/landingzones/workload/nonprod/*.tfvars'
-
-```
-
  
 
 
