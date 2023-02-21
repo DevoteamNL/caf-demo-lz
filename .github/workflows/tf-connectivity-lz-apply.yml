@@ -15,7 +15,7 @@ env:
 
 jobs:
   terraform-apply:
-    name: 'Terraform Applt - Connectivity Landing Zone'
+    name: 'Terraform Apply - Connectivity Landing Zone'
     runs-on: ubuntu-latest
     environment: non production      
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
