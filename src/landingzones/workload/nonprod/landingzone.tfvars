@@ -1,22 +1,22 @@
 landingzone = {
   backend_type = "azurerm"
-  key = "nonprod"
+  key          = "nonprod"
   tfstates = {
     current = {
       storage_account_name = "sttfstatebudgetthuis"
       container_name       = "nonprod"
       resource_group_name  = "caf-bt-tfstate-rg"
-      tfstate               = "caf_nonprod.tfsate"        
+      tfstate              = "caf_nonprod.tfsate"
     }
-    connectivity = {      
+    connectivity = {
       storage_account_name = "sttfstatebudgetthuis"
       container_name       = "connectivity"
       resource_group_name  = "caf-bt-tfstate-rg"
-      tfstate               = "caf_connectivity.tfsate"
+      tfstate              = "caf_connectivity.tfsate"
     }
   }
 }
-  
+
 resource_groups = {
   nonprod-rg = {
     name     = "app-nonprod-rg"
@@ -29,12 +29,12 @@ azuread_groups = {
     name        = "caf-sqlserver-admins"
     description = "Administrators of the SQL servers."
     members = {
-      user_principal_names = []
+      user_principal_names   = []
       group_keys             = []
       service_principal_keys = []
     }
     owners = {
-      user_principal_names = []
+      user_principal_names   = []
       service_principal_keys = []
       object_ids             = []
     }
@@ -139,11 +139,11 @@ networking = {
       }
     }
   }
-   vnet_peerings = {
+  vnet_peerings = {
     hub-re1_TO_spoke-re1 = {
       name = "hub-re1_TO_spoke-re1"
       from = {
-        lz_key = "connectivity" 
+        lz_key     = "connectivity"
         output_key = "vnets"
         vnet_key   = "hub_re1"
       }
@@ -161,7 +161,7 @@ networking = {
         vnet_key = "spoke_re1"
       }
       to = {
-        lz_key = "connectivity" 
+        lz_key     = "connectivity"
         output_key = "vnets"
         vnet_key   = "hub_re1"
       }
@@ -171,14 +171,14 @@ networking = {
       use_remote_gateways          = false
     }
   }
-} 
+}
 
-compute = { 
+compute = {
   azure_container_registries = {
     acr1 = {
       name               = "lz-nonprod-acr"
       resource_group_key = "nonprod-rg"
-      sku                = "Premium"      
+      sku                = "Premium"
     }
   }
 
@@ -188,35 +188,46 @@ compute = {
       resource_group_key = "nonprod-rg"
       os_type            = "Linux"
       identity = {
-        type = "SystemAssigned"
+        type                 = "UserAssigned"
+        managed_identity_key = "webapp_mi"
       }
       vnet_key = "spoke_re1"
       network_profile = {
         network_plugin    = "azure"
         load_balancer_sku = "Standard"
       }
-      # enable_rbac = true
+      # enable_rbac = true      
       role_based_access_control = {
         enabled = true
         azure_active_directory = {
           managed = true
         }
       }
+
       addon_profile = {
         oms_agent = {
           enabled           = false
           log_analytics_key = "central_logs_region1"
         }
       }
+      # admin_groups = {
+      #   # ids = []
+      #   # azuread_groups = {
+      #   #   keys = []
+      #   # }
+      # }
+
       load_balancer_profile = {
+        # Only one option can be set
         managed_outbound_ip_count = 1
       }
+
       default_node_pool = {
         name       = "sharedsvc"
         vm_size    = "Standard_F4s_v2"
         subnet_key = "aks_nodepool_system"
         subnet = {
-          key = "aks_nodepool_system"          
+          key = "aks_nodepool_system"
         }
         enabled_auto_scaling  = false
         enable_node_public_ip = false

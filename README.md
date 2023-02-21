@@ -62,7 +62,7 @@ global_settings = {
 ```
 
 
-### Configure the Landing Zones
+### Configure the Landing Zone
 
 
 ```hcl
@@ -72,6 +72,7 @@ landingzone = {
   key          = "connectivity"
   environment  = "production"
   tfstates = {
+    /* Why ? - */
     current = {      
       storage_account_name = "uzexstconnctivityeoui"
       container_name       = "tfstate"
