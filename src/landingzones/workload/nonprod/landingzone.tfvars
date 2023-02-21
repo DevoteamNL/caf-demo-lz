@@ -57,8 +57,6 @@ managed_identities = {
   }
 }
 
-
-
 keyvaults = {
   kv1 = {
     name               = "nonprodkv"
