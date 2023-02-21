@@ -1,47 +1,81 @@
-variable "landingzone" {}
+variable "landingzone" {
+  description = "(Required)The Landing Zone Configuration."
+}
+
 variable "backend" {
-  default = {}
+  description = "(Optional)Backend configuration."
+  default     = {}
 }
 
 variable "azurerm_client_id" {
-  default = null
+  description = "(Optional)Backend configuration."
+  default     = null
 }
 
 variable "azurerm_client_secret" {
-  default = null
+  description = "(Optional)Backend configuration."
+  default     = null
 }
 
 variable "tenant_id" {
-  default = null
+  description = "(Optional)Backend configuration."
+  default     = null
 }
 
 variable "subscription_id" {
-  default = null
+  description = "(Optional)Backend configuration."
+  default     = null
 }
-variable "resource_groups" {}
+variable "resource_groups" {
+  description = "(Required)Resource Groups of the Landing Zone."
+}
+
 variable "subscriptions" {
-  default = {}
+  description = "(Optional)Azure Subscriptions to be created."
+  default     = {}
 }
 
-variable "global_settings" {}
-
-
+variable "global_settings" {
+  description = "(Required)The Global Settings. See the README."
+}
 
 variable "storage_accounts" {
-  default = {}
+  description = "(Optional)Storage accounts of the Landing Zone."
+  default     = {}
 }
-
 
 variable "networking" {
-  default = {}
+  description = "(Optional)Backend configuration."
+  default     = {}
 }
-
 
 variable "compute" {
-  default = {}
+  description = "(Optional)Compute resources (AKS, Virtual Machine, etc)."
+  default     = {}
+}
+
+variable "database" {
+  description = "(Optional)Database resources."
+  default     = {}
+}
+
+variable "tags" {
+  description = "(Optional)Tags."
+  default     = {}
+}
+
+variable "keyvaults" {
+  description = "(Optional)Keyvault resources."
+  default     = {}
 }
 
 
-variable "tags" {
-  default = {}
+variable "managed_identities" {
+  description = "(Optional)Managed Identities resources."
+  default     = {}
+}
+
+variable "remote_state_acess_key" {
+  description = "(Optional) Set the remote state access key."
+  default     = null
 }

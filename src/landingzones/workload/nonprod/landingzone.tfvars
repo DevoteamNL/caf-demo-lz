@@ -6,13 +6,13 @@ landingzone = {
       storage_account_name = "sttfstatebudgetthuis"
       container_name       = "nonprod"
       resource_group_name  = "caf-bt-tfstate-rg"
-      key                  = "caf_nonprod.tfsate"    
+      tfstate               = "caf_nonprod.tfsate"        
     }
-    connectivity = {
+    connectivity = {      
       storage_account_name = "sttfstatebudgetthuis"
       container_name       = "connectivity"
       resource_group_name  = "caf-bt-tfstate-rg"
-      key                  = "caf_connectivity.tfsate"
+      tfstate               = "caf_connectivity.tfsate"
     }
   }
 }
@@ -21,42 +21,102 @@ resource_groups = {
   nonprod-rg = {
     name     = "app-nonprod-rg"
     location = "region1"
-
   }
 }
 
-storage_accounts = {
-  
-  app_nonprod = {
-    name                      = "l0"
-    resource_group_key        = "nonprod-rg"
-    account_kind              = "BlobStorage"
-    account_tier              = "Standard"
-    shared_access_key_enabled = false
-    account_replication_type  = "GRS" //Global replication
-    blob_properties = {
-      versioning_enabled       = true
-      last_access_time_enabled = true
-      container_delete_retention_policy = {
-        days = 7
-      }
-      delete_retention_policy = {
-        days = 7
-      }
+azuread_groups = {
+  sqlserver_admin = {
+    name        = "caf-sqlserver-admins"
+    description = "Administrators of the sales SQL server."
+    members = {
+      user_principal_names = []
+      group_keys             = []
+      service_principal_keys = []
     }
-    containers = {
-      tfstate = {
-        name = "tfstate"
-      }
+    owners = {
+      user_principal_names = []
+      service_principal_keys = []
+      object_ids             = []
+    }
+    prevent_duplicate_name = false
+  }
+}
+
+azuread_roles = {
+  mssql_servers = {
+    mssqlserver1 = {
+      roles = ["Directory Readers"]
     }
   }
 }
 
+managed_identities = {
+  webapp_mi = {
+    name               = "example_db_mi"
+    resource_group_key = "nonprod-rg"
+  }
+}
+
+
+
+keyvaults = {
+  kv1 = {
+    name               = "nonprodkv"
+    resource_group_key = "nonprod-rg"
+    sku_name           = "standard"
+    creation_policies = {
+      logged_in_user = {
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
+      }
+    }
+  }
+}
+
+
+database = {
+  mssql_servers = {
+    mssqlserver1 = {
+      name                          = "nonprod-mssqlserver"
+      region                        = "region1"
+      resource_group_key            = "nonprod-rg"
+      version                       = "12.0"
+      administrator_login           = "sqluseradmin"
+      keyvault_key                  = "kv1"
+      connection_policy             = "Default"
+      public_network_access_enabled = true
+      identity = {
+        type = "SystemAssigned"
+      }
+    }
+  }
+
+  mssql_databases = {
+    mssql_db1 = {
+      name               = "exampledb1"
+      resource_group_key = "nonprod-rg"
+      mssql_server_key   = "mssqlserver1"
+      license_type       = "LicenseIncluded"
+      max_size_gb        = 4
+      sku_name           = "BC_Gen5_2"
+
+      db_permissions = {
+        group1 = {
+          db_roles = ["db_owner", "db_accessadmin"]
+          managed_identities = {
+            nonprod = {
+              managed_identity_keys = ["webapp_mi"]
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 networking = {
   vnets = {
     // AKS SPOKE VNET
-    spoke_aks_re1 = {
+    spoke_re1 = {
       resource_group_key = "nonprod-rg"
       region             = "region1"
       vnet = {
@@ -70,21 +130,6 @@ networking = {
           cidr    = ["100.64.48.0/24"]
           nsg_key = "azure_kubernetes_cluster_nsg"
         }
-        aks_nodepool_user1 = {
-          name    = "aks_nodepool_user1"
-          cidr    = ["100.64.49.0/24"]
-          nsg_key = "azure_kubernetes_cluster_nsg"
-        }
-        aks_nodepool_user2 = {
-          name    = "aks_nodepool_user2"
-          cidr    = ["100.64.50.0/24"]
-          nsg_key = "azure_kubernetes_cluster_nsg"
-        }
-        AzureBastionSubnet = {
-          name    = "AzureBastionSubnet"
-          cidr    = ["100.64.51.64/27"]
-          nsg_key = "azure_bastion_nsg"
-        }
         private_endpoints = {
           name                                           = "private_endpoints"
           cidr                                           = ["100.64.51.0/27"]
@@ -96,31 +141,61 @@ networking = {
           nsg_key = "azure_bastion_nsg"
         }
       }
-
     }
   }
-}
+   vnet_peerings = {
+    hub-re1_TO_spoke-re1 = {
+      name = "hub-re1_TO_spoke-re1"
+      from = {
+        lz_key = "connectivity" 
+        output_key = "vnets"
+        vnet_key   = "hub_re1"
+      }
+      to = {
+        vnet_key = "spoke_re1"
+      }
+      allow_virtual_network_access = true
+      allow_forwarded_traffic      = true
+      allow_gateway_transit        = false
+      use_remote_gateways          = false
+    }
+    spoke-re1_TO_hub-re1 = {
+      name = "hub_re2_TO_hub_re1"
+      from = {
+        vnet_key = "spoke_re1"
+      }
+      to = {
+        lz_key = "connectivity" 
+        output_key = "vnets"
+        vnet_key   = "hub_re1"
+      }
+      allow_virtual_network_access = true
+      allow_forwarded_traffic      = false
+      allow_gateway_transit        = false
+      use_remote_gateways          = false
+    }
+  }
+} 
 
-compute = {
- 
+
+compute = { 
   azure_container_registries = {
     acr1 = {
       name               = "lz-nonprod-acr"
       resource_group_key = "nonprod-rg"
-      sku                = "Premium"
-      #public_network_access_enabled = "false" #Only able to control when sku = "premium"
+      sku                = "Premium"      
     }
   }
 
   aks_clusters = {
     aks_nonprod = {
-      name               = "akscluster-re1-001"
+      name               = "akscluster-re1"
       resource_group_key = "nonprod-rg"
       os_type            = "Linux"
       identity = {
         type = "SystemAssigned"
       }
-      vnet_key = "spoke_aks_re1"
+      vnet_key = "spoke_re1"
       network_profile = {
         network_plugin    = "azure"
         load_balancer_sku = "Standard"
@@ -146,8 +221,7 @@ compute = {
         vm_size    = "Standard_F4s_v2"
         subnet_key = "aks_nodepool_system"
         subnet = {
-          key = "aks_nodepool_system"
-          #resource_id = "/subscriptions/97958dac-xxxx-xxxx-xxxx-9f436fa73bd4/resourceGroups/qxgc-rg-aks-re1/providers/Microsoft.Network/virtualNetworks/qxgc-vnet-aks/subnets/qxgc-snet-aks_nodepool_system"
+          key = "aks_nodepool_system"          
         }
         enabled_auto_scaling  = false
         enable_node_public_ip = false
@@ -158,7 +232,6 @@ compute = {
           "project" = "Non Prod Test Application"
         }
       }
-
       node_resource_group_name = "nonprod-rg"
 
       addon_profile = {
@@ -170,3 +243,7 @@ compute = {
     }
   }
 }
+
+
+
+
