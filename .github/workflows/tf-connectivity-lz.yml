@@ -1,8 +1,13 @@
 name: 'Connectivity Landing Zone'
 on:
   push:      
+    branches:
+      - main
     paths:
-      - '**/landingzones/core/connectivity/*.*'  
+      - '**/landingzones/core/connectivity/*.*' 
+  pull_request:
+    paths:
+      - '**/landingzones/core/connectivity/*.tfvars' 
 
 permissions:
   contents: read

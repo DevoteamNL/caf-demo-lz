@@ -1,8 +1,15 @@
 name: 'Non Prod Landing Zone'
 on:
-  push:      
+  push:
+    branches:
+      - main      
     paths:
       - '**/landingzones/workload/nonprod/*.*'        
+  pull_request:
+    paths:
+      - '**/landingzones/workload/nonprod/*.*' 
+
+
 
 permissions:
   contents: read
