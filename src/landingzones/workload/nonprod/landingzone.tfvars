@@ -146,7 +146,7 @@ compute = {
       addon_profile = {
         oms_agent = {
           enabled           = false
-          log_analytics_key = "central_logs_region1"
+          log_analytics_key = "central_logs_region2"
         }
       }
       load_balancer_profile = {
