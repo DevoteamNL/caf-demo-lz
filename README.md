@@ -7,10 +7,12 @@ This repo contains the terraform code to implement an Azure Landing Zone to Budg
 This code is based on the terraform-azurerm-caf module: https://github.com/aztfmod/terraform-azurerm-caf
 
 
-## Development Workspace requirements
+## Development workspace requirements
+ 
  - Terraform
  - Visual Studio Code
  - Git Client
+ - Azure CLI
 
 
 ## Architecture
