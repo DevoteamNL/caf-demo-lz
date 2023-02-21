@@ -8,7 +8,9 @@ variable "backend" {
 }
 
 
-variable "logged_user_objectId" {}
+variable "logged_user_objectId" {
+  default = null
+}
 
 variable "logged_aad_app_objectId" {}
 
