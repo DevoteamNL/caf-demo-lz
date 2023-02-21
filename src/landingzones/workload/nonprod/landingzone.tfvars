@@ -33,7 +33,7 @@ managed_identities = {
 
 keyvaults = {
   kv1 = {
-    name               = "nonprodkv"
+    name               = "nonprodkeyvault"
     resource_group_key = "nonprod-rg"
     sku_name           = "standard"
     creation_policies = {     
@@ -117,7 +117,7 @@ networking = {
       }
     }
   }
-  
+
   vnet_peerings = {
     hub-re1_TO_spoke-re1 = {
       name = "hub-re1_TO_spoke-re1"
