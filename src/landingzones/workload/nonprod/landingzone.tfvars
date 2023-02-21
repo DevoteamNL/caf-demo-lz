@@ -38,55 +38,18 @@ keyvaults = {
     sku_name           = "standard"
     creation_policies = {     
       logged_in_aad_app = {
-        secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]      
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
       }
       managed_identity = {
         managed_identity_key = "webapp_mi"
-        secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
-      }  
-    }
-  }
-}
-
-database = {
-  mssql_servers = {
-    mssqlserver1 = {
-      name                          = "nonprod-mssqlserver"
-      region                        = "region1"
-      resource_group_key            = "nonprod-rg"
-      version                       = "12.0"
-      administrator_login           = "sqluseradmin"
-      administrator_login_password  = "!#Admin2023"      
-      connection_policy             = "Default"
-      public_network_access_enabled = true
-      identity = {
-        type = "SystemAssigned"
-      }
-    }
-  }
-
-  mssql_databases = {
-    mssql_db1 = {
-      name               = "exampledb1"
-      resource_group_key = "nonprod-rg"
-      mssql_server_key   = "mssqlserver1"
-      license_type       = "LicenseIncluded"
-      max_size_gb        = 4
-      sku_name           = "BC_Gen5_2"
-
-      db_permissions = {
-        group1 = {
-          db_roles = ["db_owner", "db_accessadmin"]
-          managed_identities = {
-            nonprod = {
-              managed_identity_keys = ["webapp_mi"]
-            }
-          }
-        }
+        secret_permissions   = ["Set", "Get", "List", "Delete", "Purge"]
       }
     }
   }
 }
+
+
+
 
 networking = {
   vnets = {
@@ -189,7 +152,7 @@ compute = {
           log_analytics_key = "central_logs_region1"
         }
       }
-      load_balancer_profile = {       
+      load_balancer_profile = {
         managed_outbound_ip_count = 1
       }
 
