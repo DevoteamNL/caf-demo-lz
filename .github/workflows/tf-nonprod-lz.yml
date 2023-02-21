@@ -1,4 +1,4 @@
-name: 'Non Prod Landing Zone - Plan'
+name: 'Non Prod Landing Zone'
 on:
   push:      
     paths:
@@ -18,8 +18,8 @@ env:
   ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}  
 
 jobs:
-  terraform-plan:
-    name: 'Terraform Plan- Non Prod Landing Zone'
+  terraform:
+    name: 'Terraform - Non Prod Landing Zone'
     runs-on: ubuntu-latest
     environment: non production      
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest

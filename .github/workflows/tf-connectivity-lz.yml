@@ -1,4 +1,4 @@
-name: 'Connectivity Landing Zone - Plan'
+name: 'Connectivity Landing Zone'
 on:
   push:      
     paths:
@@ -18,8 +18,8 @@ env:
   ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}  
 
 jobs:
-  terraform-plan:
-    name: 'Terraform Plan- Connectivity Landing Zone'
+  terraform:
+    name: 'Terraform- Connectivity Landing Zone'
     runs-on: ubuntu-latest
     environment: non production      
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
