@@ -56,7 +56,7 @@ database = {
       resource_group_key            = "nonprod-rg"
       version                       = "12.0"
       administrator_login           = "sqluseradmin"
-      keyvault_key                  = "kv1"
+      administrator_login_password  = "!#Admin2023"      
       connection_policy             = "Default"
       public_network_access_enabled = true
       identity = {
@@ -189,15 +189,7 @@ compute = {
           log_analytics_key = "central_logs_region1"
         }
       }
-      # admin_groups = {
-      #   # ids = []
-      #   # azuread_groups = {
-      #   #   keys = []
-      #   # }
-      # }
-
-      load_balancer_profile = {
-        # Only one option can be set
+      load_balancer_profile = {       
         managed_outbound_ip_count = 1
       }
 
