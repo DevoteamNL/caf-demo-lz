@@ -317,7 +317,7 @@ locals {
     vpn_sites                                               = try(var.networking.vpn_sites, {})
   }
 
-  object_id = var.logged_aad_app_objectId
+  object_id = coalesce(var.logged_user_objectId, var.logged_aad_app_objectId, try(data.azurerm_client_config.current.object_id, null), try(data.azuread_service_principal.logged_in_app.0.object_id, null))
 
   security = {
     disk_encryption_sets                = try(var.security.disk_encryption_sets, {})
