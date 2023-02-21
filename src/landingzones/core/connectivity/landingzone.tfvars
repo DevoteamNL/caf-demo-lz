@@ -7,7 +7,7 @@ landingzone = {
       storage_account_name = "sttfstatebudgetthuis"
       container_name       = "connectivity"
       resource_group_name  = "caf-bt-tfstate-rg"
-      tfstate              = "caf_connectivity.tfsate"
+      tfstate              = "caf_connectivity.tfstate"
     }
   }
 }
