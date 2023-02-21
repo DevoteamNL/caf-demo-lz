@@ -36,17 +36,19 @@ keyvaults = {
     name               = "nonprodkeyvault"
     resource_group_key = "nonprod-rg"
     sku_name           = "standard"
-    creation_policies = {     
+    creation_policies = {
       logged_in_aad_app = {
-        secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]      
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
       }
       managed_identity = {
         managed_identity_key = "webapp_mi"
-        secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
-      }  
+        secret_permissions   = ["Set", "Get", "List", "Delete", "Purge"]
+      }
     }
   }
 }
+
+
 
 database = {
   mssql_servers = {
@@ -56,9 +58,12 @@ database = {
       resource_group_key            = "nonprod-rg"
       version                       = "12.0"
       administrator_login           = "sqluseradmin"
-      administrator_login_password  = "!#Admin2023"      
+      administrator_login_password  = "!#Admin2023"
       connection_policy             = "Default"
       public_network_access_enabled = true
+      azuread_administrator = {
+        object_id = "41df896d-c214-46ed-aeb8-de3754779e7b" #THE SERVICE PRINCIPAL
+      }
       identity = {
         type = "SystemAssigned"
       }
@@ -72,7 +77,17 @@ database = {
       mssql_server_key   = "mssqlserver1"
       license_type       = "LicenseIncluded"
       max_size_gb        = 4
-      sku_name           = "BC_Gen5_2"    
+      sku_name           = "BC_Gen5_2"
+      db_permissions = {
+        group1 = { 
+          db_roles = ["db_owner", "db_accessadmin"]
+          managed_identities = {
+            nonprod = { 
+              managed_identity_keys = ["webapp_mi"]
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -178,7 +193,7 @@ compute = {
           log_analytics_key = "central_logs_region1"
         }
       }
-      load_balancer_profile = {       
+      load_balancer_profile = {
         managed_outbound_ip_count = 1
       }
 
