@@ -2,10 +2,7 @@ name: 'Non Prod Landing Zone'
 on:
   push:      
     paths:
-      - '**/landingzones/workload/nonprod/*.*'      
-  pull_request:
-    paths:
-      - '**/landingzones/workload/nonprod/*.*'
+      - '**/landingzones/workload/nonprod/*.*'        
 
 permissions:
   contents: read
@@ -65,9 +62,9 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`          
+          const output = `#### Terraform Format and Style - \`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization - \`${{ steps.init.outcome }}\`
+          #### Terraform Plan - \`${{ steps.plan.outcome }}\`          
 
           <details><summary>Show Plan</summary>
 

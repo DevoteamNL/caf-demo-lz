@@ -174,7 +174,6 @@ networking = {
   }
 } 
 
-
 compute = { 
   azure_container_registries = {
     acr1 = {

@@ -2,10 +2,7 @@ name: 'Connectivity Landing Zone'
 on:
   push:      
     paths:
-      - '**/landingzones/core/connectivity/*.*'
-  pull_request:
-    paths:
-      - '**/landingzones/core/connectivity/*.*'
+      - '**/landingzones/core/connectivity/*.*'  
 
 permissions:
   contents: read
@@ -64,9 +61,9 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`          
+          const output = `#### Terraform Format and Style  - \`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization - \`${{ steps.init.outcome }}\`
+          #### Terraform Plan - \`${{ steps.plan.outcome }}\`          
 
           <details><summary>Show Plan</summary>
 
