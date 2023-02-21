@@ -36,9 +36,9 @@ keyvaults = {
     name               = "nonprodkeyvault"
     resource_group_key = "nonprod-rg"
     sku_name           = "standard"
-    creation_policies = {     
+    creation_policies = {
       logged_in_aad_app = {
-        secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
+        secret_permissions = ["Set", "Get", "List", "Delete" ]
       }
       managed_identity = {
         managed_identity_key = "webapp_mi"
@@ -47,9 +47,6 @@ keyvaults = {
     }
   }
 }
-
-
-
 
 networking = {
   vnets = {
