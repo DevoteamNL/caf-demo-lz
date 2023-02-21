@@ -113,7 +113,6 @@ database = {
 
 networking = {
   vnets = {
-    // AKS SPOKE VNET
     spoke_re1 = {
       resource_group_key = "nonprod-rg"
       region             = "region1"
