@@ -100,6 +100,7 @@ module "logged_in_aad_app" {
   access_policy = each.value
   tenant_id     = var.client_config.tenant_id
   object_id     = var.client_config.object_id
+  application_id = var.client_config.client_id
 }
 
 module "object_id" {
