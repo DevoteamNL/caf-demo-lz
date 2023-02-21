@@ -24,7 +24,6 @@ resource_groups = {
   }
 }
 
-
 managed_identities = {
   webapp_mi = {
     name               = "example_db_mi"
