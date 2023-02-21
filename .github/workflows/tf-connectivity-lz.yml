@@ -2,7 +2,7 @@ name: 'Connectivity Landing Zone'
 on:
   push:      
     paths:
-      - '**/landingzones/workload/nonprod/*.*'
+      - '**/landingzones/core/connectivity/*.*'
   pull_request:
     paths:
       - '**/landingzones/core/connectivity/*.*'
@@ -19,7 +19,7 @@ env:
 
 jobs:
   terraform:
-    name: 'Terraform- Connectivity Landing Zone'
+    name: 'Terraform - Connectivity Landing Zone'
     runs-on: ubuntu-latest
     environment: non production      
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
