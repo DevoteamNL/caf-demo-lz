@@ -6,13 +6,13 @@ locals {
       resource_group_name  = var.landingzone.tfstates["current"].resource_group_name
       client_id            = try(var.landingzone.tfstates["current"].client_id, try(var.backend.client_id, var.azurerm_client_id))
       client_secret        = try(var.landingzone.tfstates["current"].client_secret, try(var.backend.client_secret, var.azurerm_client_secret))
+      access_key           = try(var.landingzone.tfstates["current"].access_key, try(var.remote_state_access_key, null))
     }
   }
 }
 
 data "terraform_remote_state" "remote" {
   for_each = try(var.landingzone.tfstates, {})
-
   backend = try(each.value.backend_type, var.landingzone.backend_type, "azurerm")
   config  = local.remote_state[try(each.value.backend_type, var.landingzone.backend_type, "azurerm")][each.key]
 }
@@ -31,7 +31,7 @@ locals {
         tenant_id            = try(try(value.tenant_id, var.backend.tenant_id), var.tenant_id)
         client_id            = try(try(value.client_id, var.backend.client_id), var.azurerm_client_id)
         client_secret        = try(try(value.client_secret, var.backend.client_secret), var.azurerm_client_secret)
-
+        access_key           = try(value.access_key, try(var.remote_state_access_key, null))
       }
     }
   }

@@ -75,3 +75,7 @@ variable "managed_identities" {
   default     = {}
 }
 
+variable "remote_state_acess_key" {
+  description = "(Optional) Set the remote state access key."
+  default = null
+}
