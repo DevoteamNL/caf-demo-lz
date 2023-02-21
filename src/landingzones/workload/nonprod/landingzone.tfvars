@@ -62,12 +62,20 @@ keyvaults = {
     name               = "nonprodkv"
     resource_group_key = "nonprod-rg"
     sku_name           = "standard"
-    creation_policies = {
-      logged_in_user = {
+    creation_policies = {     
+      logged_in_aad_app = {
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
       }
     }
   }
+}
+
+keyvault_access_policies = {
+    lz-sp-policy = {
+      key = "kv1"
+      secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
+
+    }
 }
 
 database = {
