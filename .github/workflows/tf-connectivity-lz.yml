@@ -1,8 +1,13 @@
-name: 'Connectivity Landing Zone - Plan'
+name: 'Connectivity Landing Zone'
 on:
+  push:      
+    branches:
+      - main
+    paths:
+      - '**/landingzones/core/connectivity/*.*' 
   pull_request:
     paths:
-      - '**/landingzones/core/connectivity/*.tfvars'
+      - '**/landingzones/core/connectivity/*.*' 
 
 permissions:
   contents: read
@@ -15,8 +20,8 @@ env:
   ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}  
 
 jobs:
-  terraform-plan:
-    name: 'Terraform Plan- Connectivity Landing Zone'
+  terraform:
+    name: 'Terraform - Connectivity Landing Zone'
     runs-on: ubuntu-latest
     environment: non production      
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
@@ -61,9 +66,9 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`          
+          const output = `#### Terraform Format and Style  - \`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization - \`${{ steps.init.outcome }}\`
+          #### Terraform Plan - \`${{ steps.plan.outcome }}\`          
 
           <details><summary>Show Plan</summary>
 
@@ -82,4 +87,9 @@ jobs:
             body: output
           })
 
+    - name: Terraform Apply
+      id: apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/core/connectivity/landingzone.tfvars" -var-file "../../landingzones/core/connectivity/network_security.tfvars" -auto-approve      
+      working-directory: './src/devoteam-modules/dvt-caf-landingzones'
       

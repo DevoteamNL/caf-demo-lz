@@ -1,8 +1,15 @@
-name: 'Non Prod Landing Zone - Plan'
-on:      
+name: 'Non Prod Landing Zone'
+on:
+  push:
+    branches:
+      - main      
+    paths:
+      - '**/landingzones/workload/nonprod/*.*'        
   pull_request:
     paths:
-      - '**/landingzones/workload/nonprod/*.tfvars'
+      - '**/landingzones/workload/nonprod/*.*' 
+
+
 
 permissions:
   contents: read
@@ -15,8 +22,8 @@ env:
   ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}  
 
 jobs:
-  terraform-plan:
-    name: 'Terraform Plan- Non Prod Landing Zone'
+  terraform:
+    name: 'Terraform - Non Prod Landing Zone'
     runs-on: ubuntu-latest
     environment: non production      
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
@@ -50,7 +57,7 @@ jobs:
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       id: plan
-      run: terraform plan -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/workload/nonprod/landingzone.tfvars"  
+      run: terraform plan -no-color -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/workload/nonprod/landingzone.tfvars"  
       working-directory: './src/devoteam-modules/dvt-caf-landingzones'
       continue-on-error: true
       
@@ -62,9 +69,9 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`          
+          const output = `#### Terraform Format and Style - \`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization - \`${{ steps.init.outcome }}\`
+          #### Terraform Plan - \`${{ steps.plan.outcome }}\`          
 
           <details><summary>Show Plan</summary>
 
@@ -82,5 +89,11 @@ jobs:
             repo: context.repo.repo,
             body: output
           })
-
+          
+    - name: Terraform Apply
+      id: apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/workload/nonprod/landingzone.tfvars" -auto-approve 
+      working-directory: './src/devoteam-modules/dvt-caf-landingzones'
+      continue-on-error: true
       

@@ -3,25 +3,23 @@ landingzone = {
   key          = "connectivity"
   environment  = "production"
   tfstates = {
-    current = {      
+    current = {
       storage_account_name = "sttfstatebudgetthuis"
       container_name       = "connectivity"
       resource_group_name  = "caf-bt-tfstate-rg"
-      tfstate               = "caf_connectivity.tfsate"      
+      tfstate              = "caf_connectivity.tfsate"
     }
   }
-}  
+}
 
 resource_groups = {
   hub-rg = {
     name     = "conn-hub-rg"
     location = "region1"
-
   }
 }
 
 networking = {
-
   #**************************************************************#
   #VIRTUAL NETWORK***********************************************#
   #**************************************************************#
@@ -43,7 +41,7 @@ networking = {
           cidr = ["100.64.101.0/26"]
         }
       }
-      subnets = {       
+      subnets = {
         jumpbox = {
           name    = "jumpbox"
           cidr    = ["100.64.102.0/27"]
@@ -51,7 +49,7 @@ networking = {
         }
         nonprod = {
           name    = "nonprod"
-          cidr    = ["100.64.103.0/27"] 
+          cidr    = ["100.64.103.0/27"]
           nsg_key = "lznonprod"
         }
         private_endpoints = {

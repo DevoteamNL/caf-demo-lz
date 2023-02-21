@@ -27,7 +27,7 @@ resource_groups = {
 azuread_groups = {
   sqlserver_admin = {
     name        = "caf-sqlserver-admins"
-    description = "Administrators of the sales SQL server."
+    description = "Administrators of the SQL servers."
     members = {
       user_principal_names = []
       group_keys             = []
@@ -57,8 +57,6 @@ managed_identities = {
   }
 }
 
-
-
 keyvaults = {
   kv1 = {
     name               = "nonprodkv"
@@ -71,7 +69,6 @@ keyvaults = {
     }
   }
 }
-
 
 database = {
   mssql_servers = {
@@ -115,7 +112,6 @@ database = {
 
 networking = {
   vnets = {
-    // AKS SPOKE VNET
     spoke_re1 = {
       resource_group_key = "nonprod-rg"
       region             = "region1"
@@ -176,7 +172,6 @@ networking = {
     }
   }
 } 
-
 
 compute = { 
   azure_container_registries = {
