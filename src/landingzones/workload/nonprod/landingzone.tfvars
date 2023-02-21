@@ -39,12 +39,12 @@ keyvaults = {
     sku_name           = "standard"
     creation_policies = {     
       logged_in_aad_app = {
-        secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]      
       }
       managed_identity = {
         managed_identity_key = "webapp_mi"
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
-      }     
+      }  
     }
   }
 }
