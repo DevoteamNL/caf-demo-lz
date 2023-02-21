@@ -24,7 +24,6 @@ resource_groups = {
   }
 }
 
-
 managed_identities = {
   webapp_mi = {
     name               = "example_db_mi"
@@ -34,22 +33,20 @@ managed_identities = {
 
 keyvaults = {
   kv1 = {
-    name               = "nonprodkv"
+    name               = "nonprodkeyvault"
     resource_group_key = "nonprod-rg"
     sku_name           = "standard"
     creation_policies = {     
       logged_in_aad_app = {
-        secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]      
       }
       managed_identity = {
         managed_identity_key = "webapp_mi"
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
-      }     
+      }  
     }
   }
 }
-
-
 
 database = {
   mssql_servers = {
@@ -120,6 +117,7 @@ networking = {
       }
     }
   }
+
   vnet_peerings = {
     hub-re1_TO_spoke-re1 = {
       name = "hub-re1_TO_spoke-re1"

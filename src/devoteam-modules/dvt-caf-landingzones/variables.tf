@@ -7,6 +7,13 @@ variable "backend" {
   default     = {}
 }
 
+
+variable "logged_user_objectId" {
+  default = null
+}
+
+variable "logged_aad_app_objectId" {}
+
 variable "azurerm_client_id" {
   description = "(Optional)Backend configuration."
   default     = null
