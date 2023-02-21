@@ -5,7 +5,7 @@ module "landingzone" {
   }
   current_landingzone_key = var.landingzone.key
   global_settings         = var.global_settings
-  logged_user_objectId    = var.azurerm_client_id
+  /* logged_user_objectId    = var.azurerm_client_id */
   logged_aad_app_objectId = var.azurerm_client_id
   subscriptions           = var.subscriptions
   tenant_id               = try(var.backend.tenant_id, var.tenant_id)
