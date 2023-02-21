@@ -1,4 +1,4 @@
 storage_account_name = "sttfstatebudgetthuis"
 container_name       = "nonprod"
 resource_group_name  = "caf-bt-tfstate-rg"
-key                  = "caf_nonprod.tfsate"  
+key                  = "caf_nonprod.tfstate"  
