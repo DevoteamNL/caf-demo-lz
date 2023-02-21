@@ -55,9 +55,6 @@ global_settings = {
   }
 }
 
-user_type = "service-principal" /* The user type used to interact to the backend */
-
-
 ```
 
 
@@ -75,25 +72,28 @@ landingzone = {
       storage_account_name = "uzexstconnctivityeoui"
       container_name       = "tfstate"
       resource_group_name  = "uzex-rg-caf-connectivity-syhw"
-      key                  = "caf_connectivity.tfsate"
-      tenant_id            = "[SENSITIVE]" /* OPTIONAL - If is null the environment variable will be used*/
-      subscription_id      = "[SENSITIVE]" /* OPTIONAL - If is null the environment variable will be used */
+      key                  = "caf_connectivity.tfstate"      
     }
   }
 }
 
-
 ```
-
 
 
 ## The Terraform Pipelines
 
-![CI/CD Workflow](assets/ci_cd_workflow.jpeg)
 
 ### The Continuous Deployment workflow
 
+![CI/CD Workflow](assets/ci_cd_workflow.jpeg)
+
+The Pipelines are configured to run when a Pull Request is openend, and when the Merge is Approved to Main. The firts one to plan and validate and the second one to apply the changes.
+
+
+
 ### Environment variables
+
+To configure the ARM provider the service principal, tenant and subscription is necessary:
 
 ```yaml
 env:
@@ -107,7 +107,7 @@ env:
 
 ### Plan pipeline
 
-The Plan pipeline will run after the Pull Request to the master branch. The pipeline should be triggered when the landing zone path has any update. 
+The Plan pipeline will run after the Pull Request to the main branch. The pipeline should be triggered when the landing zone path has any update. 
 
 ```yaml
 name: 'Connectivity Landing Zone - Plan'
@@ -135,6 +135,7 @@ The comment result is:
 
 ### Apply pipeline
 
+The apply pipeline will run when the pull request is approved and merged, and will apply the changes. This sample is to trigger the pipeline when the tfvars files on this specific path are changed.
 
 ```yaml
 name: 'Connectivity Landing Zone - Apply'
