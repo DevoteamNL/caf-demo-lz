@@ -117,6 +117,7 @@ networking = {
       }
     }
   }
+  
   vnet_peerings = {
     hub-re1_TO_spoke-re1 = {
       name = "hub-re1_TO_spoke-re1"
