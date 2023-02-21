@@ -24,31 +24,6 @@ resource_groups = {
   }
 }
 
-azuread_groups = {
-  sqlserver_admin = {
-    name        = "caf-sqlserver-admins"
-    description = "Administrators of the SQL servers."
-    members = {
-      user_principal_names   = []
-      group_keys             = []
-      service_principal_keys = []
-    }
-    owners = {
-      user_principal_names   = []
-      service_principal_keys = []
-      object_ids             = []
-    }
-    prevent_duplicate_name = false
-  }
-}
-
-azuread_roles = {
-  mssql_servers = {
-    mssqlserver1 = {
-      roles = ["Directory Readers"]
-    }
-  }
-}
 
 managed_identities = {
   webapp_mi = {
@@ -66,17 +41,15 @@ keyvaults = {
       logged_in_aad_app = {
         secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
       }
+      managed_identity = {
+        managed_identity_key = "webapp_mi"
+        secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
+      }     
     }
   }
 }
 
-keyvault_access_policies = {
-    lz-sp-policy = {
-      key = "kv1"
-      secret_permissions = ["Set", "Get", "List", "Delete", "Purge"]
 
-    }
-}
 
 database = {
   mssql_servers = {
