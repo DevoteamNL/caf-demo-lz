@@ -79,3 +79,7 @@ variable "remote_state_access_key" {
   description = "(Optional) Set the remote state access key."
   default     = null
 }
+
+variable "keyvault_access_policies" {
+  default = {}
+}
