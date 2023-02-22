@@ -61,7 +61,7 @@ jobs:
     - name: Terraform Apply
       id: destroy      
       run: |
-        terraform apply -var-file "../../landingzones/global-settings.tfvars" \
+        terraform destroy -var-file "../../landingzones/global-settings.tfvars" \
         -var-file "../../landingzones/core/connectivity/landingzone.tfvars" \
         -var-file "../../landingzones/core/connectivity/network_security.tfvars" \
         -var 'logged_aad_app_objectId=${{ env.AZURE_AD_SP_OBJECT_ID }}' -auto-approve      
