@@ -1,9 +1,9 @@
-name: 'Non Prod Landing Zone'
+name: 'Destroy Non Prod Landing Zone'
 on:
   push:
     branches:
       - main
-      
+
 permissions:
   contents: read
   pull-requests: write
