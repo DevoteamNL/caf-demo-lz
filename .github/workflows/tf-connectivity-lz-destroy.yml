@@ -1,0 +1,95 @@
+name: 'Destroy Connectivity Landing Zone'
+
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  ARM_CLIENT_ID: ${{ secrets.AZURE_ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_ARM_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_LZ_CONN_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+  AZURE_AD_SP_OBJECT_ID: ${{ secrets.AZURE_AD_SP_OBJECT_ID }}  
+
+jobs:
+  terraform:
+    name: 'Terraform - Connectivity Landing Zone'
+    runs-on: ubuntu-latest
+    environment: non production      
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Format
+      id: fmt
+      run: terraform fmt -check
+      working-directory: './src/devoteam-modules/dvt-caf-landingzones'
+
+    - name: Terraform Init
+      id: init
+      run: terraform init -backend-config "../../landingzones/core/connectivity/connectivity.tfbackend" 
+      working-directory: './src/devoteam-modules/dvt-caf-landingzones'
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      id: plan
+      run: |
+        terraform plan -no-color -var-file "../../landingzones/global-settings.tfvars"  \
+         -var-file "../../landingzones/core/connectivity/landingzone.tfvars" \
+         -var-file "../../landingzones/core/connectivity/network_security.tfvars" \
+         -var 'logged_aad_app_objectId=${{ env.AZURE_AD_SP_OBJECT_ID }}'  
+      working-directory: './src/devoteam-modules/dvt-caf-landingzones'
+      continue-on-error: true
+      
+    - name: Update Pull Request
+      uses: actions/github-script@v6
+      if: github.event_name == 'pull_request'
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = `#### Terraform Format and Style  - \`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization - \`${{ steps.init.outcome }}\`
+          #### Terraform Plan - \`${{ steps.plan.outcome }}\`          
+
+          <details><summary>Show Plan</summary>
+
+          \`\`\`\n
+          ${process.env.PLAN}
+          \`\`\`
+
+          </details>
+
+          *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
+
+    - name: Terraform Apply
+      id: destroy      
+      run: |
+        terraform apply -var-file "../../landingzones/global-settings.tfvars" \
+        -var-file "../../landingzones/core/connectivity/landingzone.tfvars" \
+        -var-file "../../landingzones/core/connectivity/network_security.tfvars" \
+        -var 'logged_aad_app_objectId=${{ env.AZURE_AD_SP_OBJECT_ID }}' -auto-approve      
+      working-directory: './src/devoteam-modules/dvt-caf-landingzones'
+      
