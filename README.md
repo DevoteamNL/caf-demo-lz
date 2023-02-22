@@ -98,21 +98,28 @@ The Pipelines are configured to run when a Pull Request is openend, and when the
 
 ### Environment variables
 
-To configure the ARM provider the service principal, tenant and subscription is necessary:
+To configure the ARM provider the service principal, tenant and subscription is necessary, and to use it on the pipeline the secrets on GitHub Action are needed:
+
+
+![Secrets](assets/secrets.png)
+
+
+The Environment variables in the pipeline:
 
 ```yaml
 env:
-  ARM_CLIENT_ID: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_ID }}
-  ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_SECRET }}
-  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHER_SUBSCRIPTION_ID }}
+  ARM_CLIENT_ID: ${{ secrets.AZURE_ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_ARM_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_LZ_NPROD_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+  AZURE_AD_SP_OBJECT_ID: ${{ secrets.AZURE_AD_SP_OBJECT_ID }}  
 
 ```
 
 
 ### Pipeline
 
-The Terraform pipeline will plan and apply the infrastruture using CI/CD principles, the code of the Connectivity Landing Zone Pipeline demo is
+The Terraform pipeline will plan and apply the infrastruture using CI/CD principles, the code of the Connectivity Landing Zone Pipeline demo is:
 
 ```yaml 
 
@@ -132,10 +139,11 @@ permissions:
   pull-requests: write
 
 env:
-  ARM_CLIENT_ID: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_ID }}
-  ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_LAUNCHER_CLIENT_SECRET }}
-  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_LAUNCHER_SUBSCRIPTION_ID }}
-  ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}  
+  ARM_CLIENT_ID: ${{ secrets.AZURE_ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_ARM_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_LZ_CONN_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+  AZURE_AD_SP_OBJECT_ID: ${{ secrets.AZURE_AD_SP_OBJECT_ID }}  
 
 jobs:
   terraform:
@@ -158,13 +166,12 @@ jobs:
       with:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    # Check the code format
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Format
       id: fmt
       run: terraform fmt -check
       working-directory: './src/devoteam-modules/dvt-caf-landingzones'
 
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       id: init
       run: terraform init -backend-config "../../landingzones/core/connectivity/connectivity.tfbackend" 
@@ -173,11 +180,14 @@ jobs:
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       id: plan
-      run: terraform plan -no-color -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/core/connectivity/landingzone.tfvars" -var-file "../../landingzones/core/connectivity/network_security.tfvars"  
+      run: |
+        terraform plan -no-color -var-file "../../landingzones/global-settings.tfvars"  \
+         -var-file "../../landingzones/core/connectivity/landingzone.tfvars" \
+         -var-file "../../landingzones/core/connectivity/network_security.tfvars" \
+         -var 'logged_aad_app_objectId=${{ env.AZURE_AD_SP_OBJECT_ID }}'  
       working-directory: './src/devoteam-modules/dvt-caf-landingzones'
       continue-on-error: true
       
-      # This step will get the plan output and add a comment on the Pull Request, the reviewer woll can take a look on the changes and aprove the PR
     - name: Update Pull Request
       uses: actions/github-script@v6
       if: github.event_name == 'pull_request'
@@ -207,12 +217,17 @@ jobs:
             body: output
           })
 
-    # When the Pipeline is executed after a push on main branch, the apply will be auto approved and the infrastructure will be provisioned
     - name: Terraform Apply
       id: apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -var-file "../../landingzones/global-settings.tfvars" -var-file "../../landingzones/core/connectivity/landingzone.tfvars" -var-file "../../landingzones/core/connectivity/network_security.tfvars" -auto-approve      
-      working-directory: './src/devoteam-modules/dvt-caf-landingzones'      
+      run: |
+        terraform apply -var-file "../../landingzones/global-settings.tfvars" \
+        -var-file "../../landingzones/core/connectivity/landingzone.tfvars" \
+        -var-file "../../landingzones/core/connectivity/network_security.tfvars" \
+        -var 'logged_aad_app_objectId=${{ env.AZURE_AD_SP_OBJECT_ID }}' -auto-approve      
+      working-directory: './src/devoteam-modules/dvt-caf-landingzones'
+      
+     
 
 ```
  
