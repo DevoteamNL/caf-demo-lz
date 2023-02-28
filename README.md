@@ -1,8 +1,8 @@
-# Budget Thuis Azure Landing Zone
+# CAF Demo Azure Landing Zone
 
 ## Intro
 
-This repo contains the terraform code to implement an Azure Landing Zone to Budget Thuis. The modules are developmed using the Microsoft Cloud Adoption Framework for Azure. To get more details follow the link: https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/
+This repo contains the terraform code to implement an Azure Landing Zone. The modules are developmed using the Microsoft Cloud Adoption Framework for Azure. To get more details follow the link: https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/
 
 This code is based on the terraform-azurerm-caf module: https://github.com/aztfmod/terraform-azurerm-caf
 
