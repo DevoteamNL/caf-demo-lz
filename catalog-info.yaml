@@ -1,17 +1,17 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: budget-thuis-lz
-  description: Terraform code to implement an Azure Landing Zone to Budget Thuis
+  name: caf-demo-lz
+  description: Terraform code to implement an Azure Landing Zone
   annotations:
-    github.com/project-slug: DevoteamNL/budget-thuis-lz
+    github.com/project-slug: DevoteamNL/caf-demo-lz
     github.com/team-slug: DevoteamNL/m-cloud
   tags:
     - azure
     - terraform
     - hcl
   links:
-    - url: https://github.com/DevoteamNL/budget-thuis-lz
+    - url: https://github.com/DevoteamNL/caf-demo-lz
       title: Repository Homepage
       icon: github
 spec:
