@@ -12,6 +12,7 @@ landingzone = {
   }
 }
 
+
 resource_groups = {
   hub-rg = {
     name     = "conn-hub-rg"
