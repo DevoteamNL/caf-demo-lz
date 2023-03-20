@@ -12,7 +12,6 @@ landingzone = {
   }
 }
 
-
 resource_groups = {
   hub-rg = {
     name     = "conn-hub-rg"
@@ -21,6 +20,7 @@ resource_groups = {
 }
 
 
+/* 
 networking = {
   vnets = {
     hub_vnet = {
@@ -35,7 +35,10 @@ networking = {
           name = "GatewaySubnet" #Must be called GateWaySubnet in order to host a Virtual Network Gateway
           cidr = ["10.0.1.0/27"] #10.0.1.0 - 10.0.1.255
         }
-        
+        AzureFirewallSubnet = {
+          name = "AzureFirewallSubnet" #Must be called AzureFirewallSubnet
+          cidr = ["10.0.2.0/24"]#10.0.2.0 - 10.0.2.255
+        }
       }
       subnets = {
         jumpbox = {
@@ -51,4 +54,4 @@ networking = {
       }
     }
   }
-}
+} */
