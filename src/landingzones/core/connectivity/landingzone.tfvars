@@ -12,6 +12,7 @@ landingzone = {
   }
 }
 
+
 resource_groups = {
   hub-rg = {
     name     = "conn-hub-rg"
@@ -20,7 +21,6 @@ resource_groups = {
 }
 
 
-/* 
 networking = {
   vnets = {
     hub_vnet = {
@@ -37,7 +37,7 @@ networking = {
         }
         AzureFirewallSubnet = {
           name = "AzureFirewallSubnet" #Must be called AzureFirewallSubnet
-          cidr = ["10.0.2.0/24"]#10.0.2.0 - 10.0.2.255
+          cidr = ["10.0.2.0/27"]#10.0.2.0 - 10.0.2.255
         }
       }
       subnets = {
@@ -54,4 +54,4 @@ networking = {
       }
     }
   }
-} */
+}
