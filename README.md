@@ -38,6 +38,44 @@ The naming convention of this project is based on the Cloud Adoption Framework f
   - Configure the Landing Zones .tfbackend files with the remote state backend configuration
 
 
+
+To create a service principal with the necessary privileges, use these commands, first to create and give the Contributor role on the subscription:
+
+```bash
+az ad sp create-for-rbac --name "iaac-tf-sp" --role "Contributor" --scopes "/subscriptions/$subscriptionID"
+```
+
+The result:
+```
+{
+  "appId": "00000000-0000-0000-0000-000000000000",
+  "displayName": "iaac-tf-sp",
+  "password": "00000000000000000000000000000000",
+  "tenant": "00000000-0000-0000-0000-000000000000"
+}
+```
+PS: The 0s are to obfuscate the result.
+
+##### Create the resource group
+
+```bash
+az group create --location $LOCATION --name $RESOURCE_GROUP_NAME
+```
+
+##### Create the storage account
+
+```bash
+az storage account create --name $ACCOUNT_NAME --resource-group $RESOURCE_GROUP_NAME --location $LOCATION
+```
+
+##### Create the container
+
+```bash
+az storage container create --name $ACCOUNT_NAME --account-name $ACCOUNT_NAME --resource-group $RESOURCE_GROUP_NAME
+```
+
+
+
 ## Setup the Landing Zone
 
 ### Global Settings
