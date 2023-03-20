@@ -19,6 +19,7 @@ resource_groups = {
   }
 }
 
+
 /* 
 networking = {
   vnets = {
