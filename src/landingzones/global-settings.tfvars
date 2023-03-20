@@ -1,5 +1,5 @@
 global_settings = {
-  passthrough = false
+  passthrough = true
   inherit_tags = false
   random_length = 3
   use_slug = false
