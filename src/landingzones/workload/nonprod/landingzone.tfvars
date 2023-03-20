@@ -3,16 +3,18 @@ landingzone = {
   key          = "nonprod"
   tfstates = {
     current = {
-      storage_account_name = "sttfstatebudgetthuis"
+      storage_account_name = "sttfstatedvtcaf"
       container_name       = "nonprod"
-      resource_group_name  = "caf-bt-tfstate-rg"
+      resource_group_name  = "caf-tfstate-rg"
       tfstate              = "caf_nonprod.tfstate"
+
     }
     connectivity = {
-      storage_account_name = "sttfstatebudgetthuis"
+      storage_account_name = "sttfstatedvtcaf"
       container_name       = "connectivity"
-      resource_group_name  = "caf-bt-tfstate-rg"
+      resource_group_name  = "caf-tfstate-rg"
       tfstate              = "caf_connectivity.tfstate"
+
     }
   }
 }
