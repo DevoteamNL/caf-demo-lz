@@ -95,7 +95,7 @@ networking = {
       subnets = {
         aks_nodepool_system = {
           name    = "aks_nodepool_system"
-          cidr    = ["10.1.1.0/20"]
+          cidr    = ["10.1.1.0/24"]
           nsg_key = "azure_kubernetes_cluster_nsg"
         }
         private_endpoints = {
