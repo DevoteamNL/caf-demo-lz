@@ -123,7 +123,7 @@ compute = {
       os_type            = "Linux"
       identity = {
         type                 = "UserAssigned"
-        managed_identity_key = "webapp_mi"
+        managed_identity_key = "nonprodapp_mi"
       }
       vnet_key = "spoke_re1"
       network_profile = {
