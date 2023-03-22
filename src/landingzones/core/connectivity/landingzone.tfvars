@@ -27,7 +27,7 @@ networking = {
       resource_group_key = "hub-rg"
       region             = "region1"
       vnet = {
-        name          = "mm-vnet-hub"
+        name          = "dvt-vnet-hub"
         address_space = ["10.0.0.0/16"]#10.0.0.0 - 10.0.255.255 
       }
       specialsubnets = {

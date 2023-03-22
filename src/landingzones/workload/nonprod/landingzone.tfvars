@@ -27,8 +27,8 @@ resource_groups = {
 }
 
 managed_identities = {
-  webapp_mi = {
-    name               = "example_db_mi"
+  nonprodapp_mi = {
+    name               = "dvt_db_mi"
     resource_group_key = "nonprod-rg"
   }
 }
@@ -40,10 +40,10 @@ keyvaults = {
     sku_name           = "standard"
     creation_policies = {
       logged_in_aad_app = {
-        secret_permissions = ["Set", "Get", "List", "Delete" ]
+        secret_permissions = ["Set", "Get", "List", "Delete"]
       }
       managed_identity = {
-        managed_identity_key = "webapp_mi"
+        managed_identity_key = "nonprodapp_mi"
         secret_permissions   = ["Set", "Get", "List", "Delete", "Purge"]
       }
     }
@@ -80,6 +80,7 @@ database = {
   }
 }
 
+
 networking = {
   vnets = {
     spoke_re1 = {
@@ -87,28 +88,23 @@ networking = {
       region             = "region1"
       vnet = {
         name          = "aks"
-        address_space = ["100.64.48.0/22"]
+        address_space = ["10.1.0.0/16"]
       }
       specialsubnets = {}
       subnets = {
         aks_nodepool_system = {
           name    = "aks_nodepool_system"
-          cidr    = ["100.64.48.0/24"]
+          cidr    = ["10.1.1.0/20"]
           nsg_key = "azure_kubernetes_cluster_nsg"
         }
         private_endpoints = {
           name                                           = "private_endpoints"
-          cidr                                           = ["100.64.51.0/27"]
+          cidr                                           = ["10.1.16.0/27"]
           enforce_private_link_endpoint_network_policies = true
-        }
-        jumpbox = {
-          name    = "jumpbox"
-          cidr    = ["100.64.51.128/27"]
-          nsg_key = "azure_bastion_nsg"
         }
       }
     }
-  }  
+  }
 }
 
 compute = {
@@ -127,7 +123,7 @@ compute = {
       os_type            = "Linux"
       identity = {
         type                 = "UserAssigned"
-        managed_identity_key = "webapp_mi"
+        managed_identity_key = "nonprodapp_mi"
       }
       vnet_key = "spoke_re1"
       network_profile = {
@@ -165,7 +161,7 @@ compute = {
         node_count            = 1
         os_disk_size_gb       = 512
         tags = {
-          "project" = "Non Prod Test Application"
+          "project" = "Non Prod Test Node Pool"
         }
       }
       node_resource_group_name = "app-nonprod-rg"
