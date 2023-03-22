@@ -111,7 +111,7 @@ networking = {
 compute = {
   azure_container_registries = {
     acr1 = {
-      name               = "lz-nonprod-acr"
+      name               = "dvtnonprodacr"
       resource_group_key = "nonprod-rg"
       sku                = "Premium"
     }
