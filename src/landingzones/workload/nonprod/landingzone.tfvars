@@ -165,7 +165,7 @@ compute = {
           "project" = "Non Prod Test Node Pool"
         }
       }
-      node_resource_group_name = "app-nonprod-rg"
+      node_resource_group_name = "app-nonprod-nodes-rg"
 
       addon_profile = {
         azure_keyvault_secrets_provider = {
