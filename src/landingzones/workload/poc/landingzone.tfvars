@@ -9,24 +9,127 @@ landingzone = {
       tfstate              = "caf_nonprod.tfstate"
 
     }
-    connectivity = {
-      storage_account_name = "sttfstatedvtcaf"
-      container_name       = "connectivity"
-      resource_group_name  = "caf-tfstate-rg"
-      tfstate              = "caf_connectivity.tfstate"
-
-    }
   }
 }
 
-
 resource_groups = {
-  nonprod-rg = {
-    name     = "app-nonprod-rg"
+  hub-rg = {
+    name     = "demo-network-hub-rg"
+    location = "region1"
+  }
+  spoke-rg = {
+    name     = "demo-network-spoke-rg"
     location = "region1"
   }
 }
 
+networking = {
+  vnets = {
+    hub = {
+      resource_group_key = "hub-rg"
+      region             = "region1"
+      vnet = {
+        name          = "spoke-vnet"
+        address_space = ["10.1.0.0/16"]
+      }
+      specialsubnets = {}
+      subnets = {
+        default = {
+          name    = "default"
+          cidr    = ["10.1.1.0/24"]          
+        }
+      }
+    }
+    spoke = {
+      resource_group_key = "spoke-rg"
+      region             = "region1"
+      vnet = {
+        name          = "spoke-vnet"
+        address_space = ["192.168.0.0/16"]
+      }
+      specialsubnets = {}
+      subnets = {
+        default = {
+          name    = "default"
+          cidr    = ["192.168.0.0/24"]          
+        }
+      }
+    }
+  }
+
+  vnet_peerings = {
+    spokeToHub = {
+        name = 
+        to = {
+            vnet_key = "hub"
+        }
+        from = {            
+            vnet_key = "spoke"
+        }
+    }    
+  }
+}
+
+network_security_group_definition = { 
+  demo = {
+    nsg = [
+      {
+        name                       = "ssh-inbound-22",
+        priority                   = "200"
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "tcp"
+        source_port_range          = "*"
+        destination_port_range     = "22"
+        source_address_prefix      = "*"
+        destination_address_prefix = "VirtualNetwork"
+      },
+      {
+        name                       = "http-inbound-80",
+        priority                   = "210"
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "tcp"
+        source_port_range          = "*"
+        destination_port_range     = "80"
+        source_address_prefix      = "*"
+        destination_address_prefix = "VirtualNetwork"
+      } 
+      ]
+  }
+}
+
+
+compute = {
+  virtual_machines = {
+      hub_vm = {
+        resource_group_key = ""
+        provision_vm_agent = ""
+        os_type = "linux"
+        virtual_machine_settings  = {
+          linux = {
+            name = ""
+            size = ""
+            admin_username = ""
+            password = ""           
+            identity = {
+              type = "SystemAssigned"
+            }
+            source_image_reference = {
+
+            }
+          }
+        }
+        
+      }
+
+  }
+}
+
+
+
+
+/* 
 managed_identities = {
   nonprodapp_mi = {
     name               = "dvt_db_mi"
@@ -106,6 +209,9 @@ networking = {
       }
     }
   }
+  vnet_peerings = {
+
+  }
 }
 
 compute = {
@@ -176,3 +282,5 @@ compute = {
     }
   }
 }
+ */
+
