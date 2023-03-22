@@ -1,4 +1,4 @@
-storage_account_name = "sttfstatebudgetthuis"
+storage_account_name = "sttfstatedvtcaf"
 container_name       = "nonprod"
-resource_group_name  = "caf-bt-tfstate-rg"
+resource_group_name  = "caf-tfstate-rg"
 key                  = "caf_nonprod.tfstate"  
