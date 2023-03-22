@@ -26,7 +26,7 @@ resource_groups = {
     location = "region1"
   }
 }
-
+/* 
 managed_identities = {
   nonprodapp_mi = {
     name               = "dvt_db_mi"
@@ -176,5 +176,5 @@ compute = {
     }
   }
 }
-
+ */
 
