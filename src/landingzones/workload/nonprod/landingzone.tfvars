@@ -36,7 +36,7 @@ managed_identities = {
 
 keyvaults = {
   kv1 = {
-    name               = "nonprodkeyvault"
+    name               = "dvtnonprodkeyvault"
     resource_group_key = "nonprod-rg"
     sku_name           = "standard"
     creation_policies = {
@@ -111,7 +111,7 @@ networking = {
 compute = {
   azure_container_registries = {
     acr1 = {
-      name               = "lz-nonprod-acr"
+      name               = "dvtnonprodacr"
       resource_group_key = "nonprod-rg"
       sku                = "Premium"
     }
