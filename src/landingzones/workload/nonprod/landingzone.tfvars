@@ -19,7 +19,6 @@ landingzone = {
   }
 }
 
-
 resource_groups = {
   nonprod-rg = {
     name     = "app-nonprod-rg"
@@ -33,54 +32,6 @@ managed_identities = {
     resource_group_key = "nonprod-rg"
   }
 }
-
-keyvaults = {
-  kv1 = {
-    name               = "dvtnonprodkeyvault"
-    resource_group_key = "nonprod-rg"
-    sku_name           = "standard"
-    creation_policies = {
-      logged_in_aad_app = {
-        secret_permissions = ["Set", "Get", "List", "Delete"]
-      }
-      managed_identity = {
-        managed_identity_key = "nonprodapp_mi"
-        secret_permissions   = ["Set", "Get", "List", "Delete", "Purge"]
-      }
-    }
-  }
-}
-
-database = {
-  mssql_servers = {
-    mssqlserver1 = {
-      name                          = "nonprod-mssqlserver"
-      region                        = "region1"
-      resource_group_key            = "nonprod-rg"
-      version                       = "12.0"
-      administrator_login           = "sqluseradmin"
-      keyvault_key                  = "kv1"
-      connection_policy             = "Default"
-      public_network_access_enabled = true
-      identity = {
-        type = "SystemAssigned"
-      }
-    }
-  }
-
-  mssql_databases = {
-    mssql_db1 = {
-      name               = "exampledb1"
-      resource_group_key = "nonprod-rg"
-      mssql_server_key   = "mssqlserver1"
-      license_type       = "LicenseIncluded"
-      max_size_gb        = 4
-      sku_name           = "BC_Gen5_2"
-
-    }
-  }
-}
-
 
 networking = {
   vnets = {
