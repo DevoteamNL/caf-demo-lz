@@ -34,6 +34,7 @@ managed_identities = {
 }
 
 networking = {
+  
   vnets = {
     spoke_re1 = {
       resource_group_key = "nonprod-rg"
@@ -57,8 +58,10 @@ networking = {
       }
     }
   }
+
   vnet_peerings = {
     spoke_to_hub = {
+      name = "spoke_to_hub"
       from = {
         vnet_key = "spoke_re1"
       }
@@ -71,6 +74,7 @@ networking = {
     }
   
    hub_to_spoke = {
+    name = "hub_to_spoke"
       from = {
         lz_key   = "connectivity"
         vnet_key = "hub_vnet"
@@ -86,6 +90,7 @@ networking = {
 }
 
 compute = {
+  /* Deploy a container registry */
   azure_container_registries = {
     acr1 = {
       name               = "dvtnonprodacr"
@@ -94,7 +99,9 @@ compute = {
     }
   }
 
+ /* AKS Clusters */ 
   aks_clusters = {
+
     aks_nonprod = {
       name               = "akscluster-re1"
       resource_group_key = "nonprod-rg"
@@ -107,15 +114,13 @@ compute = {
       network_profile = {
         network_plugin    = "azure"
         load_balancer_sku = "Standard"
-      }
-      # enable_rbac = true      
+      }  
       role_based_access_control = {
         enabled = true
         azure_active_directory = {
           managed = true
         }
       }
-
       addon_profile = {
         oms_agent = {
           enabled           = false
@@ -125,7 +130,6 @@ compute = {
       load_balancer_profile = {
         managed_outbound_ip_count = 1
       }
-
       default_node_pool = {
         name       = "sharedsvc"
         vm_size    = "Standard_F4s_v2"
@@ -143,7 +147,6 @@ compute = {
         }
       }
       node_resource_group_name = "app-nonprod-nodes-rg"
-
       addon_profile = {
         azure_keyvault_secrets_provider = {
           secret_rotation_enabled  = true
