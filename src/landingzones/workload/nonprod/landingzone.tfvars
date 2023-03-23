@@ -69,7 +69,7 @@ networking = {
       allow_virtual_network_access = true
       allow_forwarded_traffic      = true
     }
-  }
+  
    hub_to_spoke = {
       from = {
         lz_key   = "connectivity"
