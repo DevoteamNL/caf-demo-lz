@@ -1,12 +1,12 @@
 landingzone = {
   backend_type = "azurerm"
-  key          = "nonprod"
+  key          = "poc"
   tfstates = {
     current = {
       storage_account_name = "sttfstatedvtcaf"
-      container_name       = "nonprod"
+      container_name       = "poc-vnet"
       resource_group_name  = "caf-tfstate-rg"
-      tfstate              = "caf_nonprod.tfstate"
+      tfstate              = "caf_poc-vnet.tfstate"
 
     }
   }
