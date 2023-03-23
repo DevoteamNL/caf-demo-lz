@@ -70,6 +70,19 @@ networking = {
       allow_forwarded_traffic      = true
     }
   }
+   hub_to_spoke = {
+      from = {
+        lz_key   = "connectivity"
+        vnet_key = "hub_vnet"
+        
+      }
+      to = {
+        vnet_key = "spoke_re1"
+      }
+      allow_virtual_network_access = true
+      allow_forwarded_traffic      = true
+    }
+  }
 }
 
 compute = {
