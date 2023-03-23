@@ -20,7 +20,7 @@ resource_groups = {
   }
 }
 
-
+/* 
 networking = {
   vnets = {
     hub_vnet = {
@@ -54,4 +54,4 @@ networking = {
       }
     }
   }
-}
+} */
