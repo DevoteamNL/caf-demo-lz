@@ -25,7 +25,7 @@ resource_groups = {
     location = "region1"
   }
 }
-
+/* 
 managed_identities = {
   nonprodapp_mi = {
     name               = "dvt_db_mi"
@@ -90,7 +90,6 @@ networking = {
 }
 
 compute = {
-  /* Deploy a container registry */
   azure_container_registries = {
     acr1 = {
       name               = "dvtnonprodacr"
@@ -99,7 +98,6 @@ compute = {
     }
   }
 
- /* AKS Clusters */ 
   aks_clusters = {
 
     aks_nonprod = {
@@ -155,4 +153,4 @@ compute = {
       }
     }
   }
-}
+} */
