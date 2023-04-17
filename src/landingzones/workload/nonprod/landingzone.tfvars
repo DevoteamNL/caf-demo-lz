@@ -96,7 +96,7 @@ networking = {
 
 keyvaults = {
   kv1 = {
-    name               = "nonprodkeyvault"
+    name               = "nonprodkeyvault010245787"
     resource_group_key = "nonprod-rg"
     sku_name           = "standard"
     creation_policies = {
